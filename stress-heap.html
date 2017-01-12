@@ -15,7 +15,7 @@ function generate() {
   const kLogSize = 1000;
   for (var i = 0; i < kChunkSize && current < count; i++) {
     var node = {id: current, links: []};
-    var edges = Math.min(kMaxEdge, current);
+    var edges = Math.min(kMaxEdge, i);
     for (var j = 0; j < edges; j++) {
       var neighbor = current - j - 1;
       node.links.push(nodes[neighbor]);

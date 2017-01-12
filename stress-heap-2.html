@@ -16,13 +16,13 @@ function generate() {
   const kPayloadSize = 100;
   for (var i = 0; i < kChunkSize && current < count; i++) {
     var node = {id: current, links: [], payload: ""};
-    var edges = Math.min(kMaxEdge, current);
+    var edges = Math.min(kMaxEdge, i);
     for (var j = 0; j < edges; j++) {
       var neighbor = current - j - 1;
       node.links.push(nodes[neighbor]);
       nodes[neighbor].links.push(node);
     }
-    for (var i = 0; i < kPayloadSize; i++) {
+    for (var k = 0; k < kPayloadSize; k++) {
       node.payload += Math.random() + ";";
     }
     nodes.push(node);
@@ -49,7 +49,7 @@ function start() {
 </script>
 <body>
   <label for="count">Number of objects: </label>
-  <input type="text" id="count" value="50000" />
+  <input type="text" id="count" value="100000" />
   <input type="button" value="Generate" onclick="start()">
   <div id="log"/>
 </body>
