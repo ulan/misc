@@ -1,23 +1,14 @@
 
 <html>
 <script>
-
-function log(message) {
-  document.getElementById("log").textContent = message;
-}
-
 var nodes;
 var count;
 var current;
 
 function generate() {
   const kChunkSize = 1000;
-  const kLogSize = 1000;
   const kPayloadSize = 100000;
   for (var i = 0; i < kChunkSize && current < count; i++) {
-    if (current % kLogSize === 0) {
-      log("Created " + current + " objects...");
-    }
     var node = {};
     node.payload = new Array(kPayloadSize);
     for (var j = 0; j < kPayloadSize; j++) {
@@ -26,16 +17,14 @@ function generate() {
     nodes.push(node);
     current++;
   }
-  if (current == count) {
-    log("Created " + current + " objects. Open DevTools and take heap snapshot.");
-  } else {
+  if (current < count) {
     setTimeout(generate, 0);
   }
 }
 
 function start() {
   nodes = [];
-  count = 20000;
+  count = 200000;
   current = 0;
   setTimeout(generate, 0)
 }
@@ -43,6 +32,5 @@ function start() {
 </script>
 <body>
   Open DevTools and generate objects by clicking the button.  <input type="button" value="Generate" onclick="start()">
-  <div id="log"> </div>
 </body>
 </html>
