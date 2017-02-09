@@ -16,7 +16,7 @@ function generate() {
     var node = {};
     node.payload = new Array(kPayloadSize);
     for (var j = 0; j < kPayloadSize; j++) {
-      node.payload[i] = i * 1.3;
+      node.payload[j] = i * 1.3;
     }
     nodes.push(node);
     current++;
@@ -24,7 +24,11 @@ function generate() {
   if (current < count) {
     setTimeout(generate, 0);
   } else {
-    log("Done.");
+    var sum = 0;
+    for (var i = 0; i < nodes.length; i++) {
+      sum += nodes[i].payload[i % kPayloadSize];
+    }
+    log("Done (" + sum + ").");
   }
 }
 
