@@ -5,6 +5,10 @@ var nodes;
 var count;
 var current;
 
+function log(message) {
+  document.getElementById("log").textContent = message;
+}
+
 function generate() {
   const kChunkSize = 1000;
   const kPayloadSize = 100000;
@@ -19,6 +23,8 @@ function generate() {
   }
   if (current < count) {
     setTimeout(generate, 0);
+  } else {
+    log("Done.");
   }
 }
 
@@ -26,11 +32,13 @@ function start() {
   nodes = [];
   count = 200000;
   current = 0;
+  log("Generating...");
   setTimeout(generate, 0)
 }
 
 </script>
 <body>
   Open DevTools and generate objects by clicking the button.  <input type="button" value="Generate" onclick="start()">
+  <div id="log"></div>
 </body>
 </html>
