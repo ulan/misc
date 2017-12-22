@@ -1,0 +1,36 @@
+<html>
+<script>
+
+let leaking_frames = [];
+let start_time = null;
+let end_time = null;
+
+function reload_frame() {
+  if (start_time === null) {
+    start_time = new Date();
+  }
+  if (leaking_frames.length == 1000) {
+    end_time = new Date();
+    document.getElementById('time').innerHTML =
+      "Time " + Math.round(end_time - start_time) + "ms";
+    return;
+  }
+  leaking_frames.push(window.frames[0]);
+  document.getElementById('container').innerHTML =
+      "<iframe src='leaked-iframe.html' id='myframe' > </iframe>";
+  document.getElementById('counter').innerHTML =
+      "Leaking " + leaking_frames.length + " iframes";
+  // Reload the iframe.
+  document.getElementById('myframe').src = document.getElementById('myframe').src
+  window.setTimeout(reload_frame, 10);
+}
+
+</script>
+<body onload="reload_frame()">
+  <div id="container">
+  <iframe src="leaked-iframe.html" id="myframe" > </iframe>
+  </div>
+  <div id="counter"> </div>
+  <div id="time"> </div>
+</body>
+</html>
