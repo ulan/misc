@@ -1,0 +1,22 @@
+<html>
+<script>
+
+let garbage = [];
+
+function generate_garbage() {
+  for (let i = 0; i < 20; i++) {
+    let a = new Array(50000);
+    for (let j = 0; j < a.length; j += 10) {
+      a[j] = j + Date.now();
+    }
+    garbage.push(a);
+  }
+  document.getElementById('content').innerHTML = "iframe at " + new Date();
+}
+
+</script>
+<body onload="generate_garbage()">
+	<div id="content">
+	</div>
+</body>
+</html>

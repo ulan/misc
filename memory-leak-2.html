@@ -1,0 +1,25 @@
+<html>
+<script>
+
+let leaking_frames = [];
+
+function reload_frame() {
+  leaking_frames.push(window.frames[0]);
+  document.getElementById('container').innerHTML =
+      "<iframe src='leaked-iframe-2.html' id='myframe' > </iframe>";
+  document.getElementById('counter').innerHTML =
+      "Leaking " + leaking_frames.length + " iframes";
+  // Reload the iframe.
+  document.getElementById('myframe').src = document.getElementById('myframe').src
+  window.setTimeout(reload_frame, 10);
+}
+
+</script>
+<body onload="reload_frame()">
+  <div id="container">
+  <iframe src="leaked-iframe-2.html" id="myframe" > </iframe>
+  </div>
+  <div id="counter"> </div>
+  <div id="memory"> </div>
+</body>
+</html>
