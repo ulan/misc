@@ -3,8 +3,18 @@
 
 let leaking_frames = [];
 
+window.addEventListener("pong", function() {
+  document.getElementById('message').innerHTML = "pong received";
+}, false);
+
 function reload_frame() {
   leaking_frames.push(window.frames[0]);
+  for (let i = 0; i < leaking_frames.length; i++) {
+    leaking_frames[i].postMessage("ping", "*");
+  }
+  document.getElementById('myframe').contentWindow.postMessage("ping", "*");
+  window.setTimeout(reload_frame, 10);
+  if (leaking_frames.length > 0) return;
   document.getElementById('container').innerHTML =
       "<iframe src='leaked-iframe-2.html' id='myframe' > </iframe>";
   document.getElementById('counter').innerHTML =
@@ -19,6 +29,7 @@ function reload_frame() {
   <div id="container">
   <iframe src="leaked-iframe-2.html" id="myframe" > </iframe>
   </div>
+  <div id="message"> </div>
   <div id="counter"> </div>
   <div id="memory"> </div>
 </body>

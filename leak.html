@@ -1,0 +1,23 @@
+<html>
+<script>
+function run() {
+  var iframe = document.createElement('iframe');
+  iframe.src = 'iframe.html';
+  iframe.addEventListener('load', function() {
+    var local_variable  = iframe.contentWindow;
+    function leakingListener() {
+      // This reference keeps the iframe alive.
+      console.log(local_variable);
+    }
+    document.body.addEventListener('click', leakingListener);
+    document.body.removeChild(iframe);  
+    document.getElementById('message').innerHTML =
+        'Take a heap snapshot in DevTools and search for object "Leak".';
+  });
+  document.body.appendChild(iframe);
+}
+</script>
+<body onload="run()">
+  <div id='message'>Loading...</div>
+</body>
+</html>

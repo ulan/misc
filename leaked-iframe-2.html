@@ -1,7 +1,13 @@
 <html>
 <script>
 
-let garbage = [];
+class Garbage {
+ constructor() {
+  this.garbage = [];
+ }
+}
+
+let garbage = new Garbage();
 
 function generate_garbage() {
   for (let i = 0; i < 20; i++) {
@@ -9,10 +15,17 @@ function generate_garbage() {
     for (let j = 0; j < a.length; j += 10) {
       a[j] = j + Date.now();
     }
-    garbage.push(a);
+    garbage.garbage.push(a);
   }
   document.getElementById('content').innerHTML = "iframe at " + new Date();
+
+window.addEventListener("ping", function () {
+  if (garbage.garbage.length == 20) {
+	  window.parent.postMessage("pong", "*");
+  }
+}, false);
 }
+
 
 </script>
 <body onload="generate_garbage()">
