@@ -6,10 +6,10 @@ function run() {
   iframe.addEventListener('load', function() {
     var local_variable  = iframe.contentWindow;
     function leakingListener() {
-      // This reference keeps the iframe alive.
-      console.log(local_variable);
+      // Do something with local_variable.
+      if (local_variable) {}
     }
-    document.body.addEventListener('click', leakingListener);
+    document.body.addEventListener('my-debug-event', leakingListener);
     document.body.removeChild(iframe);  
     document.getElementById('message').innerHTML =
         'Take a heap snapshot in DevTools and search for object "Leak".';
