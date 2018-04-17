@@ -9,15 +9,19 @@ function reload_frame() {
       "<iframe src='leaked-iframe.html' id='myframe' > </iframe>";
   document.getElementById('counter').innerHTML =
       "Leaking " + leaking_frames.length + " iframes";
+  if (performance.memory && performance.memory.totalJSHeapSize) {
+    document.getElementById('memory').innerHTML = "JavaScript heap " +
+        Math.round(performance.memory.totalJSHeapSize / 1024 / 1024) + "MB";
+  }
   // Reload the iframe.
   document.getElementById('myframe').src = document.getElementById('myframe').src
   window.setTimeout(reload_frame, 10);
 }
 
 </script>
-<body onload="reload_frame()">
-  <div id="container">
-  <iframe src="leaked-iframe.html" id="myframe" > </iframe>
+<body onload="reload_frame()" style="font-family: Roboto">
+  <div id="container" style="display:none">
+    <iframe src="leaked-iframe.html" id="myframe" > </iframe>
   </div>
   <div id="counter"> </div>
   <div id="memory"> </div>
