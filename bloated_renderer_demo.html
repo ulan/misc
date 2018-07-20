@@ -1,0 +1,72 @@
+<html>
+<head>
+
+<style>
+  body {
+    font-family: 'Roboto', sans-serif;
+  }
+</style>
+
+<script>
+const kLength = 10000;
+const kMinimumUptimeInSeconds = 600;
+let heapLimit = performance.memory.jsHeapSizeLimit;
+let root = [];
+function go() {
+  document.getElementById('btn').disabled = true;
+  setTimeout(leak, 1);
+}
+
+function leak() {
+  for (let k = 0; k < 10; k++) {
+    let data = [];
+    for (let i = 0; i < kLength; i++) {
+      data[i] = i / 3.0;
+    }
+    root.push(data);
+  }
+  let percentage = Math.round((root.length * kLength * 8) / heapLimit * 100)
+  document.getElementById('counter').innerHTML =
+    "Running: memory usage at " + percentage + "% of the maximum.";
+  setTimeout(leak, 1);
+}
+
+let start = new Date();
+
+function countdown() {
+  let timePassedInSeconds = (new Date() - start) / 1000;
+  let wait = Math.round(Math.max(0, kMinimumUptimeInSeconds - timePassedInSeconds));
+  document.getElementById('timer').innerHTML = Math.round(wait);
+  if (wait > 0) {
+    setTimeout(countdown, 1000);
+  }
+}
+
+</script>
+</head>
+<body onload="countdown()">
+  <h1>Bloated renderer detection demo page.</h1>
+  <p>Instructions</p>
+  <ol>
+  <li>
+    Enable <b><tt>Bloated renderer detection</tt></b> feature in
+    <b><tt>chrome://flags</tt></b>.
+  </li>
+  <li>
+    Start Chrome with <b><tt>--enable-blink-features=BloatedRendererDetectionSkipUptimeCheck</tt></b> command line flag <b>or</b> wait for <b id="timer"></b> seconds.
+  </li>
+  <li>Click this button to increase memory usage of the page: <button id="btn" onclick="go()">Go</button></li>
+  </ol>
+  <h2 style="background-color:#ffd0d0"><b id="counter"> </b></h2>
+  <p>Expected outcome when the page runs out of memory:</p>
+  <ol>
+  <li>
+    This page is reloaded.
+  </li>
+  <li>
+    Infobar <b><tt>"The web page was reloaded because it ran out of memory"</tt></b> is shown.
+  </li>
+  </ol>
+
+</body>
+</html>
