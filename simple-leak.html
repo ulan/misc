@@ -1,0 +1,35 @@
+<html>
+<head>
+
+<style>
+  body {
+    font-family: 'Roboto', sans-serif;
+  }
+</style>
+
+<script>
+const kLength = 10000;
+const kMinimumUptimeInSeconds = 600;
+let heapLimit = performance.memory.jsHeapSizeLimit;
+let root = [];
+let start = new Date();
+
+function go() {
+  for (let k = 0; k < 10; k++) {
+    let data = [];
+    for (let i = 0; i < kLength; i++) {
+      data[i] = i / 3.0;
+    }
+    root.push(data);
+  }
+  let timePassed = (new Date() - start);
+  document.getElementById('counter').innerHTML = Math.round(timePassed);
+  setTimeout(go, 1);
+}
+
+</script>
+</head>
+<body onload="go()">
+  <h2 style="background-color:#ffd0d0"><b id="counter"> </b></h2>
+</body>
+</html>
