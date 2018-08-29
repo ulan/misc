@@ -1,4 +1,4 @@
-const MAX_NUMBER_OF_WORKERS = 10;
+const NUMBER_OF_WORKERS = 10;
 let done = false;
 
 function spawnWorker(index) {
