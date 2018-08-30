@@ -30,10 +30,17 @@ function go() {
   allocationsPerWorker = parseInt(document.getElementById('allocationsPerWorker').value) * 1024 * 1024;
   spawnWorker();
 }
+
+function onLoad() {
+  if (window.document.URL.indexOf('auto=1') >= 0) {
+    go();
+  }
+}
+
   </script>
-  <body onload="">
+  <body onload="onLoad()">
   <div>
-    Number of workers: <input type="text" id="numberOfWorkers" value="100" size="3"></input>
+    Number of workers: <input type="text" id="numberOfWorkers" value="1500" size="3"></input>
   </div>
   <div>
     Allocations per worker in MB: <input type="text" id="allocationsPerWorker" value="5" size="3"></input>
