@@ -32,7 +32,16 @@ function go() {
 }
 
 function onLoad() {
-  if (window.document.URL.indexOf('auto=1') >= 0) {
+  let url = window.document.URL;
+  let workers = url.match(/workers=(\d+)/);
+  if (workers) {
+    document.getElementById('numberOfWorkers').value = workers[1];
+  }
+  let allocations = url.match(/allocations=(\d+)/);
+  if (allocations) {
+    document.getElementById('allocationsPerWorker').value = allocations[1];
+  }
+  if (url.indexOf('auto=1') >= 0) {
     go();
   }
 }
@@ -40,7 +49,7 @@ function onLoad() {
   </script>
   <body onload="onLoad()">
   <div>
-    Number of workers: <input type="text" id="numberOfWorkers" value="1500" size="3"></input>
+    Number of workers: <input type="text" id="numberOfWorkers" value="1000" size="3"></input>
   </div>
   <div>
     Allocations per worker in MB: <input type="text" id="allocationsPerWorker" value="5" size="3"></input>
