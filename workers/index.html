@@ -1,7 +1,44 @@
 <!DOCTYPE html>
 <html>
-  <script src='main.js'></script>
-  <body onload="spawnWorker(0)">
+  <script>
+
+let done = false;
+
+function spawnWorker(index, numberOfWorkers, closeWorker, allocationsPerWorker) {
+  if (index == numberOfWorkers) {
+    done = true;
+    document.getElementById('counter').innerHTML = 'Done';
+    return;
+  }
+  let worker = new Worker('worker.js');
+  worker.postMessage({index: index, closeWorker: closeWorker, allocationsPerWorker: allocationsPerWorker});
+  document.getElementById('counter').innerHTML =
+      'Spawned ' + index + ' workers.';
+  worker.onmessage = function(e) {
+    spawnWorker(index + 1, numberOfWorkers, closeWorker, allocationsPerWorker);
+  }
+}
+
+function go() {
+  let numberOfWorkers = parseInt(document.getElementById('numberOfWorkers').value);
+  let closeWorker = document.getElementById('closeWorker').checked;
+  let allocationsPerWorker = parseInt(document.getElementById('allocationsPerWorker').value) * 1024 * 1024;
+  spawnWorker(0, numberOfWorkers, closeWorker, allocationsPerWorker);
+}
+  </script>
+  <body onload="">
+  <div>
+    Number of workers: <input type="text" id="numberOfWorkers" value="100" size="3"></input>
+  </div>
+  <div>
+    Allocations per worker in MB: <input type="text" id="allocationsPerWorker" value="5" size="3"></input>
+  </div>
+  <div>
+    <input type="checkbox" id="closeWorker"> Call <b>close()</b> on Worker
+  </div>
+  <div>
+  <button id="btn" onclick="go()">Go</button>
+  </div>
   <p id='counter'></p>
   </body>
 </html>
