@@ -1,33 +1,36 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-  <script>
-
+<script>
 let done = false;
-
 let index;
 let numberOfWorkers;
 let closeWorker;
 let allocationsPerWorker;
 
 function spawnWorker() {
-  if (index == numberOfWorkers) {
+  if (index === numberOfWorkers) {
     done = true;
-    document.getElementById('counter').innerHTML = 'Done';
+    document.getElementById("counter").innerHTML = "Done";
     return;
   }
-  let worker = new Worker('worker.js');
-  worker.postMessage({index: index, closeWorker: closeWorker, allocationsPerWorker: allocationsPerWorker});
-  document.getElementById('counter').innerHTML =
-      'Spawned ' + index + ' workers.';
+  let worker = new Worker("worker.js");
+  worker.postMessage({
+    index: index,
+    closeWorker: closeWorker,
+    allocationsPerWorker: allocationsPerWorker});
+  document.getElementById("counter").innerHTML =
+      "Spawned " + index + " workers.";
   ++index;
   worker.onmessage = spawnWorker;
 }
 
 function go() {
   index = 0;
-  numberOfWorkers = parseInt(document.getElementById('numberOfWorkers').value);
-  closeWorker = document.getElementById('closeWorker').checked;
-  allocationsPerWorker = parseInt(document.getElementById('allocationsPerWorker').value) * 1024 * 1024;
+  numberOfWorkers = parseInt(document.getElementById("numberOfWorkers").value);
+  closeWorker = document.getElementById("closeWorker").checked;
+  allocationsPerWorker =
+      parseInt(document.getElementById("allocationsPerWorker").value) *
+      1024 * 1024;
   spawnWorker();
 }
 
@@ -35,31 +38,37 @@ function onLoad() {
   let url = window.document.URL;
   let workers = url.match(/workers=(\d+)/);
   if (workers) {
-    document.getElementById('numberOfWorkers').value = workers[1];
+    document.getElementById("numberOfWorkers").value = workers[1];
   }
   let allocations = url.match(/allocations=(\d+)/);
   if (allocations) {
-    document.getElementById('allocationsPerWorker').value = allocations[1];
+    document.getElementById("allocationsPerWorker").value = allocations[1];
   }
-  if (url.indexOf('auto=1') >= 0) {
+  if (url.indexOf("close=0") >= 0) {
+    document.getElementById("closeWorker").checked = false;
+  }
+  if (url.indexOf("auto=1") >= 0) {
     go();
   }
 }
 
-  </script>
-  <body onload="onLoad()">
+</script>
+<body onload="onLoad()">
   <div>
-    Number of workers: <input type="text" id="numberOfWorkers" value="1000" size="3"></input>
+    Number of workers:
+    <input type="text" id="numberOfWorkers" value="1000" size="3"></input>
   </div>
   <div>
-    Allocations per worker in MB: <input type="text" id="allocationsPerWorker" value="5" size="3"></input>
+    Allocations per worker in MB:
+    <input type="text" id="allocationsPerWorker" value="5" size="3"></input>
   </div>
   <div>
-    <input type="checkbox" id="closeWorker" checked> Call <b>close()</b> on Worker
+    <input type="checkbox" id="closeWorker" checked>
+    Call <b>close()</b> on Worker
   </div>
   <div>
-  <button id="btn" onclick="go()">Go</button>
+  <button onclick="go()">Go</button>
   </div>
-  <p id='counter'></p>
-  </body>
+  <p id="counter"></p>
+</body>
 </html>
