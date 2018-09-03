@@ -8,7 +8,7 @@ function generateGarbage() {
   if (timerId) {
     clearTimeout(timerId);
   }
-  const chunkBytes = 1024 * 1024;
+  const chunkBytes = 5 * 1024 * 1024;
   const arrayLength = 10000;
   const bytesPerElement = 8;
   const bytesPerArray = arrayLength * bytesPerElement;
@@ -24,7 +24,7 @@ function generateGarbage() {
 
   garbageBytes += generated;
   if (garbageBytes < targetBytes) {
-    timerId = setTimeout(generateGarbage, 10);
+    timerId = setTimeout(generateGarbage, 1);
   } else {
     postMessage("done");
     if (closeWorker) {
@@ -36,5 +36,5 @@ function generateGarbage() {
 onmessage = function(args) {
   targetBytes = args.data.allocationsPerWorker;
   closeWorker = args.data.closeWorker;
-  setTimeout(generateGarbage, 10);
+  setTimeout(generateGarbage, 1);
 }
