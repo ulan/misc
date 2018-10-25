@@ -1,0 +1,26 @@
+<html>
+<script>
+function foo() {
+  Promise.resolve().then(foo);
+}
+</script>
+<body>
+<p>
+This shows how microtasks can make the browser unresponsive.
+</p>
+<p>
+Clicking the button will start a microtask that recursively schedules microtasks without returning to the browser message loop:
+</p>
+<p>
+<code>
+function foo() {
+  Promise.resolve().then(foo);
+}
+</code>
+</p>
+<p>
+<button onclick='foo()'>Go</button>
+<p>
+</body>
+</html>
+
