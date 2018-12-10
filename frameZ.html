@@ -1,0 +1,12 @@
+<html>
+<script>
+function run() {
+  window.open('http://0.0.0.0:8000/frameZ.html');
+}
+</script>
+<body>
+    <iframe src="https://ulan.github.io/misc/memory-leak-2.html" id="frameB" > </iframe>
+    <iframe src="frameC.html" id="frameC" > </iframe>
+    <button onclick="run()">Run</button>
+</body>
+</html>

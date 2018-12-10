@@ -1,0 +1,17 @@
+<html>
+<script>
+class Foo {
+  constructor(x) { this.x = x; }
+};
+
+function constructObject() {
+  let object = new Foo(10);
+  document.getElementById('output').innerHTML = `constructed ${object.constructor.name}${JSON.stringify(object)}`;
+  return object;
+}
+</script>
+<body>
+Frame B
+<div id='output'></div>
+</body>
+</html>

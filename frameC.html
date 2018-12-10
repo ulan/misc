@@ -1,0 +1,13 @@
+<html>
+<script>
+var retainer = null;
+function retainObject(object) {
+  retainer = object;
+  document.getElementById('output').innerHTML = `retaining ${object.constructor.name} ${JSON.stringify(object)}`;
+}
+</script>
+<body>
+Frame C
+<div id='output'></div>
+</body>
+</html>

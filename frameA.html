@@ -1,0 +1,15 @@
+<html>
+<script>
+function run() {
+  let frameB = document.getElementById('frameB');
+  let frameC = document.getElementById('frameC');
+  let object = frameB.contentWindow.constructObject();
+  frameC.contentWindow.retainObject(object);
+}
+</script>
+<body>
+    <iframe src="frameB.html" id="frameB" > </iframe>
+    <iframe src="frameC.html" id="frameC" > </iframe>
+    <button onclick="run()">Run</button>
+</body>
+</html>
