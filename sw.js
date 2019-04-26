@@ -5,4 +5,4 @@ self.addEventListener('install', event => {
   }).catch(error => {
     return console.log('no from sw')
   });
-}
+});
