@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<script>
+  function start() {
+    console.log(performance.memory.usedJSHeapSize);
+    navigator.serviceWorker.register('sw.js');
+    console.log(performance.memory.usedJSHeapSize);
+  }
+</script>
+  <body>
+    <div>
+      <button onclick="start()" id="button">Go</button>
+    </div>
+  </body>
+</html>

@@ -5,4 +5,9 @@ self.addEventListener('install', event => {
   }).catch(error => {
     return console.log('no from sw')
   });
+  try {
+    console.log(performance.memory.usedJsHeapSize);
+  } catch (e) {
+    consoel.log(e);
+  }
 });
