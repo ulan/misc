@@ -6,7 +6,9 @@ self.addEventListener('install', event => {
     return console.log('no from sw')
   });
   try {
-    console.log(performance.memory.usedJsHeapSize);
+    performance.measureMemory().then(memory => {
+      console.log(memory.total.jsMemoryEstimate);
+    });
   } catch (e) {
     console.log(e);
   }
