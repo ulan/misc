@@ -8,6 +8,6 @@ self.addEventListener('install', event => {
   try {
     console.log(performance.memory.usedJsHeapSize);
   } catch (e) {
-    consoel.log(e);
+    console.log(e);
   }
 });
