@@ -6,10 +6,16 @@
     navigator.serviceWorker.register('sw.js');
     console.log(performance.memory.usedJSHeapSize);
   }
+  function memory() {
+    let elem = document.getElementById('memory');
+    elem.textContent = performance.memory.usedJSHeapSize;
+  }
+  setInterval(memory, 1000);
 </script>
   <body>
     <div>
-      <button onclick="start()" id="button">Go</button>
+      <button onclick='start()' id='button'>Go</button>
+      <div id='memory'></div>
     </div>
   </body>
 </html>
