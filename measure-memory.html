@@ -1,0 +1,17 @@
+<html>
+<meta http-equiv="origin-trial" content="AroQL/Ed/nj6jD+9KVR4pWJGnmRsKvlSsK6hWuLX4c1DJVfpmg6o/zMqoqhOEypI1NGrzk+hW0pcEzKY43TGyAwAAABVeyJvcmlnaW4iOiJodHRwczovL3VsYW4uZ2l0aHViLmlvOjQ0MyIsImZlYXR1cmUiOiJNZWFzdXJlTWVtb3J5IiwiZXhwaXJ5IjoxNTg4MDA4MDI2fQ==">
+<script>
+async funciton measureMemory() {
+  if (!performance.measureMemory) {
+    console.log('performance.measureMemory is not available.');
+  }
+  let memory = await performance.measureMemory();
+  console.log(memory);
+}
+window.onload = function () {
+  measureMemory();
+}
+</script>
+<body>
+</body>
+</html>
