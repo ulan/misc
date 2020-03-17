@@ -1,16 +1,48 @@
 <html>
+<!-- ATTENTION: replace the |content| attribute below with your Origin Trial token that you can
+     get at https://developers.chrome.com/origintrials/#/view_trial/1281274093986906113 -->
 <meta http-equiv="origin-trial" content="AroQL/Ed/nj6jD+9KVR4pWJGnmRsKvlSsK6hWuLX4c1DJVfpmg6o/zMqoqhOEypI1NGrzk+hW0pcEzKY43TGyAwAAABVeyJvcmlnaW4iOiJodHRwczovL3VsYW4uZ2l0aHViLmlvOjQ0MyIsImZlYXR1cmUiOiJNZWFzdXJlTWVtb3J5IiwiZXhwaXJ5IjoxNTg4MDA4MDI2fQ==">
 <script>
-async function measureMemory() {
+async function performMeasurement() {
+  // 1. Invoke performance.measureMemory().
+  try {
+    const result = await performance.measureMemory();
+  } catch (error) {
+    if (error instanceof DOMException &&
+        error.name === 'SecurityError') {
+      // This may happen during Origin Trial if the browser is running
+      // without Site Isolation. In future this will be guarded by
+      // window.crossOriginIsolated. 
+      console.log(`Cannot measure memory: ${error.message}.`);
+      return;
+    }
+  }
+  // 2. Record the result.
+  console.log(`Memory usage: ${result.bytes} bytes`);
+  console.log('Memory breakdown: ', result.breakdown);
+  // 3. Schedule the next measurement.
+  scheduleMeasurement();
+}
+
+function scheduleMeasurement() {
   if (!performance.measureMemory) {
     console.log('performance.measureMemory is not available.');
+    return;
   }
-  let memory = await performance.measureMemory();
-  console.log(memory);
+  let interval = measurementInterval();
+  console.log(`Scheduling memory measurement in ${interval}ms.`);
+  setTimeout(performMeasurement, interval);
 }
-window.onload = function () {
-  measureMemory();
+
+// Returns a random interval in milliseconds that is
+// sampled with a Poisson process. It ensures that on
+// average there is one measurement every five minutes.
+function measurementInterval() {
+  const MEAN_INTERVAL_IN_MS = 5 * 60 * 1000;
+  return -Math.log(Math.random()) * MEAN_INTERVAL_IN_MS;
 }
+
+window.onload = scheduleMeasurement;
 </script>
 <body>
 </body>
