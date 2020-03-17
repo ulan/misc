@@ -5,14 +5,15 @@
 <script>
 async function performMeasurement() {
   // 1. Invoke performance.measureMemory().
+  let result;
   try {
-    const result = await performance.measureMemory();
+    result = await performance.measureMemory();
   } catch (error) {
     if (error instanceof DOMException &&
         error.name === 'SecurityError') {
       // This may happen during Origin Trial if the browser is running
       // without Site Isolation. In future this will be guarded by
-      // window.crossOriginIsolated. 
+      // window.crossOriginIsolated.
       console.log(`Cannot measure memory: ${error.message}.`);
       return;
     }
@@ -30,7 +31,8 @@ function scheduleMeasurement() {
     return;
   }
   let interval = measurementInterval();
-  console.log(`Scheduling memory measurement in ${interval}ms.`);
+  console.log('Scheduling memory measurement in ' +
+      `${Math.round(interval / 1000)} seconds.`);
   setTimeout(performMeasurement, interval);
 }
 
