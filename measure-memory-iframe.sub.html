@@ -11,7 +11,7 @@ window.onload = async function () {
     console.log('Direct call failed.', error);
   }
   try {
-    let result = await window.parent.contentWindow.measureMemory();
+    let result = await window.parent.measureMemory();
     console.log('Indirect call succeeded.', result);
   } catch (error) {
     console.log('InDirect call failed.', error);
