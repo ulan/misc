@@ -1,0 +1,24 @@
+<html>
+<!-- ATTENTION: replace the |content| attribute below with your Origin Trial token that you can
+     get at https://developers.chrome.com/origintrials/#/view_trial/1281274093986906113 -->
+<meta http-equiv="origin-trial" content="AroQL/Ed/nj6jD+9KVR4pWJGnmRsKvlSsK6hWuLX4c1DJVfpmg6o/zMqoqhOEypI1NGrzk+hW0pcEzKY43TGyAwAAABVeyJvcmlnaW4iOiJodHRwczovL3VsYW4uZ2l0aHViLmlvOjQ0MyIsImZlYXR1cmUiOiJNZWFzdXJlTWVtb3J5IiwiZXhwaXJ5IjoxNTg4MDA4MDI2fQ==">
+<script>
+window.onload = async function () {
+  try {
+    let result = await performance.measureMemory();
+    console.log('Direct call succeeded.', result);
+  } catch (error) {
+    console.log('Direct call failed.', error);
+  }
+  try {
+    let result = await window.parent.contentWindow.measureMemory();
+    console.log('Indirect call succeeded.', result);
+  } catch (error) {
+    console.log('InDirect call failed.', error);
+  }
+}
+</script>
+<body>
+  Open console to see the messages.
+</body>
+</html>
