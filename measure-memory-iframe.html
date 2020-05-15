@@ -3,7 +3,11 @@
      get at https://developers.chrome.com/origintrials/#/view_trial/1281274093986906113 -->
 <meta http-equiv="origin-trial" content="AroQL/Ed/nj6jD+9KVR4pWJGnmRsKvlSsK6hWuLX4c1DJVfpmg6o/zMqoqhOEypI1NGrzk+hW0pcEzKY43TGyAwAAABVeyJvcmlnaW4iOiJodHRwczovL3VsYW4uZ2l0aHViLmlvOjQ0MyIsImZlYXR1cmUiOiJNZWFzdXJlTWVtb3J5IiwiZXhwaXJ5IjoxNTg4MDA4MDI2fQ==">
 <script>
-window.measureMemoryWrapped = () => {
+window.measureMemoryClosure = () => {
+  return performance.measureMemory();
+}
+
+function measureMemoryFunction() {
   return performance.measureMemory();
 }
 </script>

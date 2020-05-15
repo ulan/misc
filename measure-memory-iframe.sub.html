@@ -11,10 +11,29 @@ window.onload = async function () {
     console.log('Direct call failed.', error);
   }
   try {
-    let result = await window.parent.measureMemory();
-    console.log('Indirect call succeeded.', result);
+    let result = await window.parent.measureMemoryClosure();
+    console.log('parent.measureMemoryClosure call succeeded.', result);
   } catch (error) {
-    console.log('InDirect call failed.', error);
+    console.log('parent.measureMemoryClosure call failed.', error);
+  }
+  try {
+    let result = await window.parent.measureMemoryFunction();
+    console.log('parent.measureMemoryFunction call succeeded.', result);
+  } catch (error) {
+    console.log('parent.measureMemoryFunction call failed.', error);
+  }
+  try {
+    let f = new window.parent.Function('return performance.measureMemory();');
+    let result = await f();
+    console.log('parent.Function call succeeded.', result);
+  } catch (error) {
+    console.log('parent.Function call failed.', error);
+  }
+  try {
+    let result = await window.parent.performance.measureMemory();
+    console.log('parent.performance.measureMemory call succeeded.', result);
+  } catch (error) {
+    console.log('parent.performance.measureMemory call failed.', error);
   }
 }
 </script>
