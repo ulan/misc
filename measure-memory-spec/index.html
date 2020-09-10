@@ -1224,7 +1224,7 @@ Possible extra rowspan handling
   <link href="https://www.w3.org/StyleSheets/TR/2016/cg-draft" rel="stylesheet">
   <meta content="Bikeshed version 40de15f9, updated Thu Jun 11 17:47:04 2020 -0700" name="generator">
   <link href="https://wicg.github.io/performance-measure-memory/" rel="canonical">
-  <meta content="80315521c08d974101b9a8f081f55d9c288fd5ad" name="document-revision">
+  <meta content="25ea9140d467ac43ffdfcb5f23c71e8d3f599a1c" name="document-revision">
 <style>
 /* domintro from https://resources.whatwg.org/standard.css */
 .domintro {
@@ -1513,7 +1513,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Measure Memory API</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Draft Community Group Report, <time class="dt-updated" datetime="2020-08-21">21 August 2020</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Draft Community Group Report, <time class="dt-updated" datetime="2020-09-10">10 September 2020</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1563,16 +1563,16 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     <li>
      <a href="#processing-model"><span class="secno">3</span> <span class="content">Processing model</span></a>
      <ol class="toc">
-      <li><a href="#top-level-algorithms"><span class="secno">3.1</span> <span class="content">Top-level algorithms</span></a>
-      <li><a href="#converting-an-intermediate-memory-measurement-to-the-result"><span class="secno">3.2</span> <span class="content">Converting an intermediate memory measurement to the result</span></a>
-      <li><a href="#creating-or-obtaining-a-memory-attribution-token"><span class="secno">3.3</span> <span class="content">Creating or obtaining a memory attribution token</span></a>
+      <li><a href="#extensions-to-performance"><span class="secno">3.1</span> <span class="content">Extensions to the <code class="idl"><span>Performance</span></code> interface</span></a>
+      <li><a href="#top-level-algorithms"><span class="secno">3.2</span> <span class="content">Top-level algorithms</span></a>
+      <li><a href="#converting-an-intermediate-memory-measurement-to-the-result"><span class="secno">3.3</span> <span class="content">Converting an intermediate memory measurement to the result</span></a>
+      <li><a href="#creating-or-obtaining-a-memory-attribution-token"><span class="secno">3.4</span> <span class="content">Creating or obtaining a memory attribution token</span></a>
      </ol>
     <li>
      <a href="#integration-with-the-existing-specification"><span class="secno">4</span> <span class="content">Integration with the existing specification</span></a>
      <ol class="toc">
-      <li><a href="#extensions-to-performance"><span class="secno">4.1</span> <span class="content">Extensions to the <code class="idl"><span>Performance</span></code> interface</span></a>
-      <li><a href="#extension-to-window-or-worker-global-scope"><span class="secno">4.2</span> <span class="content">Extension to <code class="idl"><span>WindowOrWorkerGlobalScope</span></code></span></a>
-      <li><a href="#extensions-to-the-existing-algorithms"><span class="secno">4.3</span> <span class="content">Extensions to the existing algorithms</span></a>
+      <li><a href="#extension-to-window-or-worker-global-scope"><span class="secno">4.1</span> <span class="content">Extension to <code class="idl"><span>WindowOrWorkerGlobalScope</span></code></span></a>
+      <li><a href="#extensions-to-the-existing-algorithms"><span class="secno">4.2</span> <span class="content">Extensions to the existing algorithms</span></a>
      </ol>
     <li><a href="#acknowledgements"><span class="secno">5</span> <span class="content">Acknowledgements</span></a>
     <li>
@@ -1594,7 +1594,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <div nonnormative>
      The tradeoff between memory and performance is inherent in many algorithms and data-structures.
 Web developers today have multiple ways to measure the timing information and no standard way to measure the memory usage.
-This specification defines a <a data-link-type="dfn" href="#performancemeasurememory" id="ref-for-performancemeasurememory">performance.measureMemory</a> API that estimates the memory usage of the web application including all its iframes and workers.
+This specification defines a <code class="idl"><a data-link-type="idl" href="#dom-performance-measurememory" id="ref-for-dom-performance-measurememory">performance.measureMemory()</a></code> API that estimates the memory usage of the web application including all its iframes and workers.
 The new API is intended for aggregating memory usage data from production. The main use cases are: 
     <ul>
      <li data-md>
@@ -1602,13 +1602,14 @@ The new API is intended for aggregating memory usage data from production. The m
      <li data-md>
       <p>A/B testing a new feature to evaluate its memory impact.</p>
      <li data-md>
-      <p>Correlating memory usage with user metrics to understand the overall impact of memory usage.</p>
+      <p>Correlating memory usage with user metrics to understand the overall impact of memory usage. </p>
     </ul>
    </div>
+   <p></p>
    <h3 class="heading settled" data-level="1.1" id="examples"><span class="secno">1.1. </span><span class="content">Examples</span><a class="self-link" href="#examples"></a></h3>
-   <div class="example" id="example1">
-    <a class="self-link" href="#example1"></a> 
-    <p>A <code>performance.measureMemory()</code> call returns a <code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#idl-promise" id="ref-for-idl-promise">Promise</a></code> and starts
+   <div class="example" id="example-simple-page">
+    <a class="self-link" href="#example-simple-page"></a> 
+    <p>A <code class="idl"><a data-link-type="idl" href="#dom-performance-measurememory" id="ref-for-dom-performance-measurememory①">performance.measureMemory()</a></code> call returns a <code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#idl-promise" id="ref-for-idl-promise">Promise</a></code> and starts
 an asynchronous measurement of the memory allocated by the page.</p>
 <pre class="language-javascript highlight">async <c- a>function</c-> run<c- p>()</c-> <c- p>{</c->
   <c- kr>const</c-> result <c- o>=</c-> await performance<c- p>.</c->measureMemory<c- p>();</c->
@@ -1659,8 +1660,8 @@ run<c- p>();</c->
 </pre>
     Here the implementation does not break memory down by memory types. 
    </div>
-   <div class="example" id="example2">
-    <a class="self-link" href="#example2"></a> 
+   <div class="example" id="example-same-origin-iframe">
+    <a class="self-link" href="#example-same-origin-iframe"></a> 
     <p>For a page that embeds a same-origin iframe the result might attribute some memory
 to that iframe and provide diagnostic information for identifying the iframe:</p>
 <pre class="language-html highlight">  <c- p>&lt;</c-><c- f>html</c-><c- p>></c->
@@ -1730,8 +1731,8 @@ An implementation is allowed to lump together some or all of iframe and page mem
 <c- p>};</c->
 </pre>
    </div>
-   <div class="example" id="example3">
-    <a class="self-link" href="#example3"></a> For a page that spawns a web worker the result includes the URL of the worker. 
+   <div class="example" id="example-web-worker">
+    <a class="self-link" href="#example-web-worker"></a> For a page that spawns a web worker the result includes the URL of the worker. 
 <pre class="language-javascript highlight"><c- p>{</c->
   bytes<c- o>:</c-> <c- mi>1800000</c-><c- p>,</c->
   breakdown<c- o>:</c-> <c- p>[</c->
@@ -1763,8 +1764,9 @@ spawned by an iframe, then worker’s attribution entry has a <code>container</c
 corresponding to the iframe element. 
     <p>Memory of shared and service workers is not included in the result.</p>
    </div>
-   <div class="example" id="example4">
-    <a class="self-link" href="#example4"></a> To get the memory usage of a shared/service worker, the <code>performance.measureMemory()</code> function needs to be invoked in the context of that worker. 
+   <div class="example" id="example-shared-worker">
+    <a class="self-link" href="#example-shared-worker"></a> To get the memory usage of a shared/service worker, the <code class="idl"><a data-link-type="idl" href="#dom-performance-measurememory" id="ref-for-dom-performance-measurememory②">performance.measureMemory()</a></code> function needs to be invoked in the context of that worker.
+The result could be something like: 
 <pre class="language-javascript highlight"><c- p>{</c->
   bytes<c- o>:</c-> <c- mi>1000000</c-><c- p>,</c->
   breakdown<c- o>:</c-> <c- p>[</c->
@@ -1782,8 +1784,8 @@ corresponding to the iframe element.
 <c- p>}</c->
 </pre>
    </div>
-   <div class="example" id="example5">
-    <a class="self-link" href="#example5"></a> If a page embeds a cross-origin iframe, then the URL of that iframe is not
+   <div class="example" id="example-cross-origin-iframe">
+    <a class="self-link" href="#example-cross-origin-iframe"></a> If a page embeds a cross-origin iframe, then the URL of that iframe is not
 revealed to avoid information leaks. Only the container element
 (which is already known to the page) appears in the result.
 Additionally, if the cross-origin iframe embeds other cross-origin iframes
@@ -1841,8 +1843,8 @@ All memory of these resources is attributed to the first iframe.
     Note that the <code>url</code> and <code>scope</code> fields of the cross-origin iframe entry have
 special values indicating that information is not available. 
    </div>
-   <div class="example" id="example6">
-    <a class="self-link" href="#example6"></a> If a cross-origin iframe embeds an iframe of the same origin as the main page,
+   <div class="example" id="example-same-and-cross-origin-iframes">
+    <a class="self-link" href="#example-same-and-cross-origin-iframes"></a> If a cross-origin iframe embeds an iframe of the same origin as the main page,
 then the same-origin iframe is revealed in the result.
 Note that there is no information leak because the main page can find and read <code>location.href</code> of the same-origin iframe. 
 <pre class="language-javascript highlight">example<c- p>.</c->com <c- p>(</c-><c- mi>1000000</c-> bytes<c- p>)</c->
@@ -1904,87 +1906,87 @@ Note that there is no information leak because the main page can find and read <
    </div>
    <h2 class="heading settled" data-level="2" id="data-model"><span class="secno">2. </span><span class="content">Data model</span><a class="self-link" href="#data-model"></a></h2>
    <h3 class="heading settled" data-level="2.1" id="memory-measurement-result"><span class="secno">2.1. </span><span class="content">Memory measurement result</span><a class="self-link" href="#memory-measurement-result"></a></h3>
-   <p>The <code>performance.measureMemory()</code> function returns a <code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#idl-promise" id="ref-for-idl-promise①">Promise</a></code> that resolves to an instance of <code>MemoryMeasurement</code> dictionary:</p>
+   <p>The <code class="idl"><a data-link-type="idl" href="#dom-performance-measurememory" id="ref-for-dom-performance-measurememory③">performance.measureMemory()</a></code> function returns a <code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#idl-promise" id="ref-for-idl-promise①">Promise</a></code> that resolves to an instance of <code class="idl"><a data-link-type="idl" href="#dictdef-memorymeasurement" id="ref-for-dictdef-memorymeasurement">MemoryMeasurement</a></code> dictionary:</p>
 <pre class="idl highlight def"><c- b>dictionary</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="dictionary" data-export id="dictdef-memorymeasurement"><code><c- g>MemoryMeasurement</c-></code></dfn> {
-  <c- b>required</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-unsigned-long-long" id="ref-for-idl-unsigned-long-long"><c- b>unsigned</c-> <c- b>long</c-> <c- b>long</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="MemoryMeasurement" data-dfn-type="dict-member" data-export data-type="unsigned long long " id="dom-memorymeasurement-bytes"><code><c- g>bytes</c-></code></dfn>;
-  <c- b>required</c-> <c- b>sequence</c->&lt;<a class="n" data-link-type="idl-name" href="#dictdef-memorybreakdownentry" id="ref-for-dictdef-memorybreakdownentry"><c- n>MemoryBreakdownEntry</c-></a>> <dfn class="dfn-paneled idl-code" data-dfn-for="MemoryMeasurement" data-dfn-type="dict-member" data-export data-type="sequence<MemoryBreakdownEntry> " id="dom-memorymeasurement-breakdown"><code><c- g>breakdown</c-></code></dfn>;
+  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-unsigned-long-long" id="ref-for-idl-unsigned-long-long"><c- b>unsigned</c-> <c- b>long</c-> <c- b>long</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="MemoryMeasurement" data-dfn-type="dict-member" data-export data-type="unsigned long long " id="dom-memorymeasurement-bytes"><code><c- g>bytes</c-></code></dfn>;
+  <c- b>sequence</c->&lt;<a class="n" data-link-type="idl-name" href="#dictdef-memorybreakdownentry" id="ref-for-dictdef-memorybreakdownentry"><c- n>MemoryBreakdownEntry</c-></a>> <dfn class="dfn-paneled idl-code" data-dfn-for="MemoryMeasurement" data-dfn-type="dict-member" data-export data-type="sequence<MemoryBreakdownEntry> " id="dom-memorymeasurement-breakdown"><code><c- g>breakdown</c-></code></dfn>;
 };
 </pre>
    <dl class="domintro">
     <dl>
-     <dt data-md><code>self . <code class="idl"><a data-link-type="idl" href="#dom-memorymeasurement-bytes" id="ref-for-dom-memorymeasurement-bytes">bytes</a></code></code>
+     <dt data-md><code>measurement . <code class="idl"><a data-link-type="idl" href="#dom-memorymeasurement-bytes" id="ref-for-dom-memorymeasurement-bytes">bytes</a></code></code>
      <dd data-md>
       <p>A number that represents the total memory usage.</p>
-     <dt data-md><code>self . <code class="idl"><a data-link-type="idl" href="#dom-memorymeasurement-breakdown" id="ref-for-dom-memorymeasurement-breakdown">breakdown</a></code></code>
+     <dt data-md><code>measurement . <code class="idl"><a data-link-type="idl" href="#dom-memorymeasurement-breakdown" id="ref-for-dom-memorymeasurement-breakdown">breakdown</a></code></code>
      <dd data-md>
-      <p>A list that partitions the total <code class="idl"><a data-link-type="idl" href="#dom-memorymeasurement-bytes" id="ref-for-dom-memorymeasurement-bytes①">bytes</a></code> and provides attribution and type information. </p>
+      <p>An array that partitions the total <code class="idl"><a data-link-type="idl" href="#dom-memorymeasurement-bytes" id="ref-for-dom-memorymeasurement-bytes①">bytes</a></code> and provides attribution and type information. </p>
     </dl>
     <p></p>
    </dl>
 <pre class="idl highlight def"><c- b>dictionary</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="dictionary" data-export id="dictdef-memorybreakdownentry"><code><c- g>MemoryBreakdownEntry</c-></code></dfn> {
-  <c- b>required</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-unsigned-long-long" id="ref-for-idl-unsigned-long-long①"><c- b>unsigned</c-> <c- b>long</c-> <c- b>long</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="MemoryBreakdownEntry" data-dfn-type="dict-member" data-export data-type="unsigned long long " id="dom-memorybreakdownentry-bytes"><code><c- g>bytes</c-></code></dfn>;
-  <c- b>required</c-> <c- b>sequence</c->&lt;<a class="n" data-link-type="idl-name" href="#dictdef-memoryattribution" id="ref-for-dictdef-memoryattribution"><c- n>MemoryAttribution</c-></a>> <dfn class="dfn-paneled idl-code" data-dfn-for="MemoryBreakdownEntry" data-dfn-type="dict-member" data-export data-type="sequence<MemoryAttribution> " id="dom-memorybreakdownentry-attribution"><code><c- g>attribution</c-></code></dfn>;
-  <c- b>required</c-> <c- b>sequence</c->&lt;<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString"><c- b>DOMString</c-></a>> <dfn class="dfn-paneled idl-code" data-dfn-for="MemoryBreakdownEntry" data-dfn-type="dict-member" data-export data-type="sequence<DOMString> " id="dom-memorybreakdownentry-useragentspecifictypes"><code><c- g>userAgentSpecificTypes</c-></code></dfn>;
+  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-unsigned-long-long" id="ref-for-idl-unsigned-long-long①"><c- b>unsigned</c-> <c- b>long</c-> <c- b>long</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="MemoryBreakdownEntry" data-dfn-type="dict-member" data-export data-type="unsigned long long " id="dom-memorybreakdownentry-bytes"><code><c- g>bytes</c-></code></dfn>;
+  <c- b>sequence</c->&lt;<a class="n" data-link-type="idl-name" href="#dictdef-memoryattribution" id="ref-for-dictdef-memoryattribution"><c- n>MemoryAttribution</c-></a>> <dfn class="dfn-paneled idl-code" data-dfn-for="MemoryBreakdownEntry" data-dfn-type="dict-member" data-export data-type="sequence<MemoryAttribution> " id="dom-memorybreakdownentry-attribution"><code><c- g>attribution</c-></code></dfn>;
+  <c- b>sequence</c->&lt;<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString"><c- b>DOMString</c-></a>> <dfn class="dfn-paneled idl-code" data-dfn-for="MemoryBreakdownEntry" data-dfn-type="dict-member" data-export data-type="sequence<DOMString> " id="dom-memorybreakdownentry-useragentspecifictypes"><code><c- g>userAgentSpecificTypes</c-></code></dfn>;
 };
 </pre>
    <dl class="domintro">
     <dl>
-     <dt data-md><code>self . <code class="idl"><a data-link-type="idl" href="#dom-memorybreakdownentry-bytes" id="ref-for-dom-memorybreakdownentry-bytes">bytes</a></code></code>
+     <dt data-md><code>breakdown . <code class="idl"><a data-link-type="idl" href="#dom-memorybreakdownentry-bytes" id="ref-for-dom-memorybreakdownentry-bytes">bytes</a></code></code>
      <dd data-md>
       <p>The size of the memory that this entry describes.</p>
-     <dt data-md><code>self . <code class="idl"><a data-link-type="idl" href="#dom-memorybreakdownentry-attribution" id="ref-for-dom-memorybreakdownentry-attribution">attribution</a></code></code>
+     <dt data-md><code>breakdown . <code class="idl"><a data-link-type="idl" href="#dom-memorybreakdownentry-attribution" id="ref-for-dom-memorybreakdownentry-attribution">attribution</a></code></code>
      <dd data-md>
-      <p>A set of <code class="idl"><a data-link-type="idl" href="https://tc39.es/ecma262/#sec-code-realms" id="ref-for-sec-code-realms">JavaScript realms</a></code> specified by their URLs and/or container elements that use the memory.</p>
-     <dt data-md><code>self . <code class="idl"><a data-link-type="idl" href="#dom-memorybreakdownentry-useragentspecifictypes" id="ref-for-dom-memorybreakdownentry-useragentspecifictypes">userAgentSpecificTypes</a></code></code>
+      <p>An array of <a data-link-type="dfn" href="https://tc39.es/ecma262/#sec-code-realms" id="ref-for-sec-code-realms">JavaScript realms</a> specified by their URLs and/or container elements that use the memory.</p>
+     <dt data-md><code>breakdown . <code class="idl"><a data-link-type="idl" href="#dom-memorybreakdownentry-useragentspecifictypes" id="ref-for-dom-memorybreakdownentry-useragentspecifictypes">userAgentSpecificTypes</a></code></code>
      <dd data-md>
-      <p>A set of implementation defined memory types associated with the memory. </p>
+      <p>An array of implementation defined memory types associated with the memory. </p>
     </dl>
     <p></p>
    </dl>
 <pre class="idl highlight def"><c- b>dictionary</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="dictionary" data-export id="dictdef-memoryattribution"><code><c- g>MemoryAttribution</c-></code></dfn> {
-  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString①"><c- b>DOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="MemoryAttribution" data-dfn-type="dict-member" data-export data-type="DOMString " id="dom-memoryattribution-url"><code><c- g>url</c-></code></dfn>;
+  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-USVString" id="ref-for-idl-USVString"><c- b>USVString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="MemoryAttribution" data-dfn-type="dict-member" data-export data-type="USVString " id="dom-memoryattribution-url"><code><c- g>url</c-></code></dfn>;
   <a class="n" data-link-type="idl-name" href="#dictdef-memoryattributioncontainer" id="ref-for-dictdef-memoryattributioncontainer"><c- n>MemoryAttributionContainer</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="MemoryAttribution" data-dfn-type="dict-member" data-export data-type="MemoryAttributionContainer " id="dom-memoryattribution-container"><code><c- g>container</c-></code></dfn>;
-  <c- b>required</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString②"><c- b>DOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="MemoryAttribution" data-dfn-type="dict-member" data-export data-type="DOMString " id="dom-memoryattribution-scope"><code><c- g>scope</c-></code></dfn>;
+  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString①"><c- b>DOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="MemoryAttribution" data-dfn-type="dict-member" data-export data-type="DOMString " id="dom-memoryattribution-scope"><code><c- g>scope</c-></code></dfn>;
 };
 </pre>
    <dl class="domintro">
     <dl>
-     <dt data-md><code>self . <code class="idl"><a data-link-type="idl" href="#dom-memoryattribution-url" id="ref-for-dom-memoryattribution-url">url</a></code></code>
+     <dt data-md><code>attribution . <code class="idl"><a data-link-type="idl" href="#dom-memoryattribution-url" id="ref-for-dom-memoryattribution-url">url</a></code></code>
      <dd data-md>
-      <p>If this attribution corresponds to a same-origin <code class="idl"><a data-link-type="idl" href="https://tc39.es/ecma262/#sec-code-realms" id="ref-for-sec-code-realms①">JavaScript realm</a></code>, then this field contains realm’s URL.
- Otherwise, the attribution is for one or more cross-origin <code class="idl"><a data-link-type="idl" href="https://tc39.es/ecma262/#sec-code-realms" id="ref-for-sec-code-realms②">JavaScript realms</a></code> and this field contains
+      <p>If this attribution corresponds to a same-origin <a data-link-type="dfn" href="https://tc39.es/ecma262/#sec-code-realms" id="ref-for-sec-code-realms①">JavaScript realm</a>, then this field contains realm’s URL.
+ Otherwise, the attribution is for one or more cross-origin <a data-link-type="dfn" href="https://tc39.es/ecma262/#sec-code-realms" id="ref-for-sec-code-realms②">JavaScript realms</a> and this field contains
  a sentinel value: <code>"cross-origin-url"</code>.</p>
-     <dt data-md><code>self . <code class="idl"><a data-link-type="idl" href="#dom-memoryattribution-container" id="ref-for-dom-memoryattribution-container">container</a></code></code>
+     <dt data-md><code>attribution . <code class="idl"><a data-link-type="idl" href="#dom-memoryattribution-container" id="ref-for-dom-memoryattribution-container">container</a></code></code>
      <dd data-md>
-      <p>Describes the DOM element that (maybe indirectly) contains the <code class="idl"><a data-link-type="idl" href="https://tc39.es/ecma262/#sec-code-realms" id="ref-for-sec-code-realms③">JavaScript realms</a></code>.
+      <p>Describes the DOM element that (maybe indirectly) contains the <a data-link-type="dfn" href="https://tc39.es/ecma262/#sec-code-realms" id="ref-for-sec-code-realms③">JavaScript realms</a>.
  It may be empty if the attribution is for the same-origin top-level realm.
- Note that cross-origin realms cannot be top-level due to <a data-link-type="dfn">cross-origin isolation</a>.</p>
-     <dt data-md><code>self . <code class="idl"><a data-link-type="idl" href="#dom-memoryattribution-scope" id="ref-for-dom-memoryattribution-scope">scope</a></code></code>
+ Note that cross-origin realms cannot be top-level due to <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#cross-origin-isolated" id="ref-for-cross-origin-isolated">cross-origin isolation</a>.</p>
+     <dt data-md><code>attribution . <code class="idl"><a data-link-type="idl" href="#dom-memoryattribution-scope" id="ref-for-dom-memoryattribution-scope">scope</a></code></code>
      <dd data-md>
-      <p>Describes the type of the same-origin <code class="idl"><a data-link-type="idl" href="https://tc39.es/ecma262/#sec-code-realms" id="ref-for-sec-code-realms④">JavaScript realm</a></code>: <code>"Window", "DedicatedWorkerGlobalScope", "SharedWorkerGlobalScope", "ServiceWorkerGlobalScope"</code> or contains <code>"cross-origin-aggregated"</code> for the cross-origin case. </p>
+      <p>Describes the type of the same-origin <a data-link-type="dfn" href="https://tc39.es/ecma262/#sec-code-realms" id="ref-for-sec-code-realms④">JavaScript realm</a>: <code>"Window", "DedicatedWorkerGlobalScope", "SharedWorkerGlobalScope", "ServiceWorkerGlobalScope"</code> or contains <code>"cross-origin-aggregated"</code> for the cross-origin case. </p>
     </dl>
     <p></p>
    </dl>
 <pre class="idl highlight def"><c- b>dictionary</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="dictionary" data-export id="dictdef-memoryattributioncontainer"><code><c- g>MemoryAttributionContainer</c-></code></dfn> {
-  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString③"><c- b>DOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="MemoryAttributionContainer" data-dfn-type="dict-member" data-export data-type="DOMString " id="dom-memoryattributioncontainer-id"><code><c- g>id</c-></code></dfn>;
-  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString④"><c- b>DOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="MemoryAttributionContainer" data-dfn-type="dict-member" data-export data-type="DOMString " id="dom-memoryattributioncontainer-src"><code><c- g>src</c-></code></dfn>;
+  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString②"><c- b>DOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="MemoryAttributionContainer" data-dfn-type="dict-member" data-export data-type="DOMString " id="dom-memoryattributioncontainer-id"><code><c- g>id</c-></code></dfn>;
+  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-USVString" id="ref-for-idl-USVString①"><c- b>USVString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="MemoryAttributionContainer" data-dfn-type="dict-member" data-export data-type="USVString " id="dom-memoryattributioncontainer-src"><code><c- g>src</c-></code></dfn>;
 };
 </pre>
    <dl class="domintro">
     <dl>
-     <dt data-md><code>self . <code class="idl"><a data-link-type="idl" href="#dom-memoryattributioncontainer-id" id="ref-for-dom-memoryattributioncontainer-id">id</a></code></code>
+     <dt data-md><code>container . <code class="idl"><a data-link-type="idl" href="#dom-memoryattributioncontainer-id" id="ref-for-dom-memoryattributioncontainer-id">id</a></code></code>
      <dd data-md>
       <p>The id attribute of the container element.</p>
-     <dt data-md><code>self . <code class="idl"><a data-link-type="idl" href="#dom-memoryattributioncontainer-src" id="ref-for-dom-memoryattributioncontainer-src">src</a></code></code>
+     <dt data-md><code>container . <code class="idl"><a data-link-type="idl" href="#dom-memoryattributioncontainer-src" id="ref-for-dom-memoryattributioncontainer-src">src</a></code></code>
      <dd data-md>
-      <p>The src attribute of the container element. If the container element is an <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#htmlobjectelement" id="ref-for-htmlobjectelement">HTMLObjectElement</a></code>,
- then this field contains the value of the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#dom-object-data" id="ref-for-dom-object-data">data</a></code> attribute.</p>
+      <p>The src attribute of the container element. If the container element is an <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-object-element" id="ref-for-the-object-element">object</a></code> element,
+ then this field contains the value of the <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-object-data" id="ref-for-attr-object-data">data</a></code> attribute.</p>
     </dl>
     <p></p>
    </dl>
    <h3 class="heading settled" data-level="2.2" id="intermediate-memory-measurement-section"><span class="secno">2.2. </span><span class="content">Intermediate memory measurement</span><a class="self-link" href="#intermediate-memory-measurement-section"></a></h3>
    <p>This specification assumes the existences of an implementation-defined algorithm that can measure
-the memory of objects allocated by a set of <code class="idl"><a data-link-type="idl" href="https://tc39.es/ecma262/#sec-agent-clusters" id="ref-for-sec-agent-clusters">JavaScript agent clusters</a></code>.
+the memory of objects allocated by a set of <a data-link-type="dfn" href="https://tc39.es/ecma262/#sec-agent-clusters" id="ref-for-sec-agent-clusters">JavaScript agent clusters</a>.
 The result of such algorithm is an <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="intermediate-memory-measurement">intermediate memory measurement</dfn>,
 which is a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set">set</a> of <a data-link-type="dfn" href="#intermediate-memory-breakdown-entry" id="ref-for-intermediate-memory-breakdown-entry">intermediate memory breakdown entries</a>.</p>
    <p>An <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="intermediate-memory-breakdown-entry">intermediate memory breakdown entry</dfn> is a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#struct" id="ref-for-struct">struct</a> containing the following <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#struct-item" id="ref-for-struct-item">items</a>:</p>
@@ -1994,16 +1996,16 @@ which is a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-
      <p>The size of the memory that this <a data-link-type="dfn" href="#intermediate-memory-breakdown-entry" id="ref-for-intermediate-memory-breakdown-entry①">intermediate memory breakdown entry</a> describes.</p>
     <dt data-md><dfn class="dfn-paneled" data-dfn-for="intermediate memory breakdown entry" data-dfn-type="dfn" data-noexport id="intermediate-memory-breakdown-entry-realms">realms</dfn>
     <dd data-md>
-     <p>A <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set①">set</a> of <code class="idl"><a data-link-type="idl" href="https://tc39.es/ecma262/#sec-code-realms" id="ref-for-sec-code-realms⑤">JavaScript realms</a></code> to which the memory is attributed to.</p>
+     <p>A <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set①">set</a> of <a data-link-type="dfn" href="https://tc39.es/ecma262/#sec-code-realms" id="ref-for-sec-code-realms⑤">JavaScript realms</a> to which the memory is attributed to.</p>
     <dt data-md><dfn class="dfn-paneled" data-dfn-for="intermediate memory breakdown entry" data-dfn-type="dfn" data-noexport id="intermediate-memory-breakdown-entry-user-agent-specific-types">user agent specific types</dfn>
     <dd data-md>
      <p>A <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set②">set</a> of <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#string" id="ref-for-string">strings</a> specifying implementation defined memory types associated with the memory.</p>
    </dl>
-   <p>Algorithms defined in this specification show how to convert an <a data-link-type="dfn" href="#intermediate-memory-measurement" id="ref-for-intermediate-memory-measurement">intermediate memory measurement</a> to an instance of <code class="idl"><a data-link-type="idl" href="#dictdef-memorymeasurement" id="ref-for-dictdef-memorymeasurement">MemoryMeasurement</a></code>.</p>
+   <p>Algorithms defined in this specification show how to convert an <a data-link-type="dfn" href="#intermediate-memory-measurement" id="ref-for-intermediate-memory-measurement">intermediate memory measurement</a> to an instance of <code class="idl"><a data-link-type="idl" href="#dictdef-memorymeasurement" id="ref-for-dictdef-memorymeasurement①">MemoryMeasurement</a></code>.</p>
    <h3 class="heading settled" data-level="2.3" id="memory-attribution-token-section"><span class="secno">2.3. </span><span class="content">Memory attribution token</span><a class="self-link" href="#memory-attribution-token-section"></a></h3>
-   <p>The link between an embedded <code class="idl"><a data-link-type="idl" href="https://tc39.es/ecma262/#sec-code-realms" id="ref-for-sec-code-realms⑥">JavaScript realm</a></code> and its container element is ephemeral and is not guaranteed to always exist.
+   <p>The link between an embedded <a data-link-type="dfn" href="https://tc39.es/ecma262/#sec-code-realms" id="ref-for-sec-code-realms⑥">JavaScript realm</a> and its container element is ephemeral and is not guaranteed to always exist.
 For example, navigation to another document in the container element or removal of the container element from the DOM tree severs the link.</p>
-   <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="memory-attribution-token">memory attribution token</dfn> provides a way to get from a <code class="idl"><a data-link-type="idl" href="https://tc39.es/ecma262/#sec-code-realms" id="ref-for-sec-code-realms⑦">JavaScript realm</a></code> to its container element.
+   <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="memory-attribution-token">memory attribution token</dfn> provides a way to get from a <a data-link-type="dfn" href="https://tc39.es/ecma262/#sec-code-realms" id="ref-for-sec-code-realms⑦">JavaScript realm</a> to its container element.
 It is a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#struct" id="ref-for-struct①">struct</a> containing the following <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#struct-item" id="ref-for-struct-item①">items</a>:</p>
    <dl>
     <dt data-md><dfn class="dfn-paneled" data-dfn-for="memory attribution token" data-dfn-type="dfn" data-noexport id="memory-attribution-token-container">container</dfn>
@@ -2016,77 +2018,90 @@ It is a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#struct" id=
    </dl>
    <p>It is stored in a new internal field of <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/webappapis.html#windoworworkerglobalscope" id="ref-for-windoworworkerglobalscope">WindowOrWorkerGlobalScope</a></code> at construction time and is always available for memory reporting.</p>
    <h2 class="heading settled" data-level="3" id="processing-model"><span class="secno">3. </span><span class="content">Processing model</span><a class="self-link" href="#processing-model"></a></h2>
-   <h3 class="heading settled" data-level="3.1" id="top-level-algorithms"><span class="secno">3.1. </span><span class="content">Top-level algorithms</span><a class="self-link" href="#top-level-algorithms"></a></h3>
-   <div class="algorithm" data-algorithm="performance.measureMemory">
-     <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="performancemeasurememory">performance.measureMemory</dfn> must run the following steps: 
+   <h3 class="heading settled" data-level="3.1" id="extensions-to-performance"><span class="secno">3.1. </span><span class="content">Extensions to the <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/hr-time/#sec-performance" id="ref-for-sec-performance">Performance</a></code> interface</span><a class="self-link" href="#extensions-to-performance"></a></h3>
+<pre class="idl highlight def"><c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://w3c.github.io/hr-time/#sec-performance" id="ref-for-sec-performance①"><c- g>Performance</c-></a> {
+  <c- b>Promise</c->&lt;<a class="n" data-link-type="idl-name" href="#dictdef-memorymeasurement" id="ref-for-dictdef-memorymeasurement②"><c- n>MemoryMeasurement</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-performance-measurememory" id="ref-for-dom-performance-measurememory④"><c- g>measureMemory</c-></a>();
+};
+</pre>
+   <dl class="domintro">
+    <dl>
+     <dt data-md><code>self . <code class="idl"><a data-link-type="idl" href="#dom-performance-measurememory" id="ref-for-dom-performance-measurememory⑤">measureMemory()</a></code></code>
+     <dd data-md>
+      <p>A method that performs an asynchronous memory measurement. Details about the result of the method are in <a href="#memory-measurement-result">§ 2.1 Memory measurement result</a>. </p>
+    </dl>
+    <p></p>
+   </dl>
+   <h3 class="heading settled" data-level="3.2" id="top-level-algorithms"><span class="secno">3.2. </span><span class="content">Top-level algorithms</span><a class="self-link" href="#top-level-algorithms"></a></h3>
+   <div class="algorithm" data-algorithm="measureMemory()" data-algorithm-for="Performance">
+     The <dfn class="dfn-paneled idl-code" data-dfn-for="Performance" data-dfn-type="method" data-export id="dom-performance-measurememory"><code>measureMemory()</code></dfn> method steps are: 
     <ol>
      <li data-md>
-      <p>Let <var>realm</var> be the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#current-settings-object" id="ref-for-current-settings-object">current settings object</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object&apos;s-realm" id="ref-for-environment-settings-object&apos;s-realm">Realm</a>.</p>
+      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#assert" id="ref-for-assert">Assert</a>: <a data-link-type="dfn" href="https://tc39.es/ecma262/#sec-agent" id="ref-for-sec-agent">current Realm</a>'s <a data-link-type="dfn" href="https://tc39.es/ecma262/#sec-agents" id="ref-for-sec-agents">agent</a>'s <a data-link-type="dfn" href="https://tc39.es/ecma262/#sec-agent-clusters" id="ref-for-sec-agent-clusters①">agent cluster</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#cross-origin-isolated" id="ref-for-cross-origin-isolated①">cross-origin isolated</a> is true.</p>
      <li data-md>
-      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#assert" id="ref-for-assert">Assert</a>: <var>realm</var>’s <a data-link-type="dfn">agent</a>'s <a data-link-type="dfn">agent cluster</a>'s <a data-link-type="dfn">cross-origin-isolated</a> is true.</p>
+      <p>If <a data-link-type="dfn" href="#memory-measurement-allowed-predicate" id="ref-for-memory-measurement-allowed-predicate">memory measurement allowed predicate</a> given <a data-link-type="dfn" href="https://tc39.es/ecma262/#sec-agent" id="ref-for-sec-agent①">current Realm</a> is false, then:</p>
+      <ol>
+       <li data-md>
+        <p>Return <a data-link-type="dfn" href="https://heycam.github.io/webidl/#a-promise-rejected-with" id="ref-for-a-promise-rejected-with">a promise rejected with</a> a "<code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#securityerror" id="ref-for-securityerror">SecurityError</a></code>" <code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#idl-DOMException" id="ref-for-idl-DOMException">DOMException</a></code>.</p>
+      </ol>
      <li data-md>
-      <p>Let <var>global object</var> be the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#current-global-object" id="ref-for-current-global-object">current global object</a>.</p>
+      <p>Let <var>agent clusters</var> be the result of <a data-link-type="dfn" href="#getting-all-agent-clusters" id="ref-for-getting-all-agent-clusters">getting all agent clusters</a> given <a data-link-type="dfn" href="https://tc39.es/ecma262/#sec-agent" id="ref-for-sec-agent②">current Realm</a>.</p>
      <li data-md>
       <p>Let <var>promise</var> be a new <code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#idl-promise" id="ref-for-idl-promise②">Promise</a></code>.</p>
      <li data-md>
-      <p>If <a data-link-type="dfn" href="#memory-measurement-allowed-predicate" id="ref-for-memory-measurement-allowed-predicate">memory measurement allowed predicate</a> given <var>global object</var> and <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#current-settings-object" id="ref-for-current-settings-object①">current settings object</a> is false, then:</p>
-      <ol>
-       <li data-md>
-        <p>Reject <var>promise</var> with a "Security Error" <code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#idl-DOMException" id="ref-for-idl-DOMException">DOMException</a></code>.</p>
-      </ol>
-     <li data-md>
-      <p>Let <var>agent clusters</var> be the result of <a data-link-type="dfn" href="#getting-all-agent-clusters" id="ref-for-getting-all-agent-clusters">getting all agent clusters</a> given <var>realm</var>.</p>
-     <li data-md>
       <p>Start asynchronous <a data-link-type="dfn" href="#implementation-defined-memory-measurement" id="ref-for-implementation-defined-memory-measurement">implementation-defined memory measurement</a> given <var>agent clusters</var> and <var>promise</var>.</p>
      <li data-md>
-      <p>Return <var>promise</var></p>
+      <p>Return <var>promise</var>.</p>
     </ol>
    </div>
    <div class="algorithm" data-algorithm="memory measurement allowed predicate">
-     To evaluate <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="memory-measurement-allowed-predicate">memory measurement allowed predicate</dfn> given a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/webappapis.html#windoworworkerglobalscope" id="ref-for-windoworworkerglobalscope①">WindowOrWorkerGlobalScope</a></code> <var>global object</var> and <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object" id="ref-for-environment-settings-object">environment settings object</a> <var>settings object</var>: 
+     To evaluate <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="memory-measurement-allowed-predicate">memory measurement allowed predicate</dfn> given a <a data-link-type="dfn" href="https://tc39.es/ecma262/#sec-code-realms" id="ref-for-sec-code-realms⑧">JavaScript realm</a> <var>realm</var>: 
     <ol>
+     <li data-md>
+      <p>Let <var>global object</var> be <var>realm</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-global" id="ref-for-concept-realm-global">global object</a>.</p>
      <li data-md>
       <p>If <var>global object</var> is a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/workers.html#sharedworkerglobalscope" id="ref-for-sharedworkerglobalscope">SharedWorkerGlobalScope</a></code>, then return true.</p>
      <li data-md>
       <p>If <var>global object</var> is a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/ServiceWorker/#serviceworkerglobalscope" id="ref-for-serviceworkerglobalscope">ServiceWorkerGlobalScope</a></code>, then return true.</p>
      <li data-md>
-      <p>If <var>global object</var> is a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window">Window</a></code> and <var>settings object</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-origin" id="ref-for-concept-settings-object-origin">origin</a> is the same as <var>settings object</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-environment-top-level-origin" id="ref-for-concept-environment-top-level-origin">top-level origin</a>, then return true.</p>
+      <p>If <var>global object</var> is a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window">Window</a></code> then</p>
+      <ol>
+       <li data-md>
+        <p>Let <var>settings object</var> be <var>realm</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-settings-object" id="ref-for-concept-realm-settings-object">settings object</a>.</p>
+       <li data-md>
+        <p>If <var>settings object</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-origin" id="ref-for-concept-settings-object-origin">origin</a> is the same as <var>settings object</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-environment-top-level-origin" id="ref-for-concept-environment-top-level-origin">top-level origin</a>, then return true.</p>
+      </ol>
      <li data-md>
       <p>Return false.</p>
     </ol>
    </div>
    <div class="algorithm" data-algorithm="getting all agent clusters">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="getting all agent clusters|get all agent clusters" data-noexport id="getting-all-agent-clusters">get all agent clusters</dfn> given an <code class="idl"><a data-link-type="idl" href="https://tc39.es/ecma262/#sec-code-realms" id="ref-for-sec-code-realms⑧">JavaScript realm</a></code> <var>realm</var>: 
+     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="getting all agent clusters|get all agent clusters" data-noexport id="getting-all-agent-clusters">get all agent clusters</dfn> given an <a data-link-type="dfn" href="https://tc39.es/ecma262/#sec-code-realms" id="ref-for-sec-code-realms⑨">JavaScript realm</a> <var>realm</var>: 
     <ol>
      <li data-md>
-      <p>If <var>realm</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#global-object" id="ref-for-global-object">global object</a> is a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window①">Window</a></code>, then:</p>
+      <p>If <var>realm</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-global" id="ref-for-concept-realm-global①">global object</a> is a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window①">Window</a></code>, then:</p>
       <ol>
        <li data-md>
-        <p>Let <var>browsing context</var> be <var>realm</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-settings-object" id="ref-for-concept-realm-settings-object">settings object</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#responsible-document" id="ref-for-responsible-document">responsible document</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-document-bc" id="ref-for-concept-document-bc">browsing context</a>.</p>
+        <p>Let <var>group</var> be the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#browsing-context-group" id="ref-for-browsing-context-group">browsing context group</a> that contains <var>realm</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-global" id="ref-for-concept-realm-global②">global object</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/window-object.html#window-bc" id="ref-for-window-bc">browsing context</a>.</p>
        <li data-md>
-        <p>Let <var>agent clusters</var> be the result of <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-getting-the-values" id="ref-for-map-getting-the-values">getting the values</a> of <var>browsing context</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#browsing-context-group" id="ref-for-browsing-context-group">browsing context group</a>'s <a data-link-type="dfn">agent cluster map</a>.</p>
-       <li data-md>
-        <p>Return <var>agent clusters</var>.</p>
+        <p>Return the result of <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-getting-the-values" id="ref-for-map-getting-the-values">getting the values</a> of <var>group</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#agent-cluster-map" id="ref-for-agent-cluster-map">agent cluster map</a>.</p>
       </ol>
      <li data-md>
-      <p>Return a singleton <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set③">set</a> of <var>realm</var>’s <a data-link-type="dfn">agent</a>'s <a data-link-type="dfn">agent cluster</a>.</p>
+      <p>Return « <var>realm</var>’s <a data-link-type="dfn" href="https://tc39.es/ecma262/#sec-agents" id="ref-for-sec-agents①">agent</a>'s <a data-link-type="dfn" href="https://tc39.es/ecma262/#sec-agent-clusters" id="ref-for-sec-agent-clusters②">agent cluster</a> ».</p>
     </ol>
    </div>
    <div class="algorithm" data-algorithm="implementation-defined memory measurement">
-     To perform <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="implementation-defined-memory-measurement">implementation-defined memory measurement</dfn> given a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set④">set</a> of <a data-link-type="dfn">agent clusters</a> <var>agent clusters</var> and
-  a <code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#idl-promise" id="ref-for-idl-promise③">Promise</a></code> <var>promise</var> run these steps asynchronously: 
+     To perform <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="implementation-defined-memory-measurement">implementation-defined memory measurement</dfn> given a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set③">set</a> of <a data-link-type="dfn" href="https://tc39.es/ecma262/#sec-agent-clusters" id="ref-for-sec-agent-clusters③">agent clusters</a> <var>agent clusters</var> and
+  a <code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#idl-promise" id="ref-for-idl-promise③">Promise</a></code> <var>promise</var> run these steps <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel" id="ref-for-in-parallel">in parallel</a>: 
     <ol>
      <li data-md>
-      <p>Let <var>intermediate memory measurement</var> be implementation-defined memory measurement of <var>agent clusters</var>.</p>
+      <p>Let <var>intermediate memory measurement</var> be an <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#implementation-defined" id="ref-for-implementation-defined">implementation-defined</a> <a data-link-type="dfn" href="#intermediate-memory-measurement" id="ref-for-intermediate-memory-measurement①">intermediate memory measurement</a> of <var>agent clusters</var>.</p>
      <li data-md>
-      <p>Let <var>memory measurement</var> be the result of <a data-link-type="dfn" href="#creating-a-new-memory-measurement" id="ref-for-creating-a-new-memory-measurement">creating a new memory measurement</a> given <var>intermediate memory measurement</var>.</p>
-     <li data-md>
-      <p>Queue a task that resolves <var>promise</var> with <var>memory measurement</var>.</p>
+      <p><a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-global-task" id="ref-for-queue-a-global-task">Queue a global task</a> on the TODO task source given <var>promise</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global">relevant global object</a> to <a data-link-type="dfn" href="https://heycam.github.io/webidl/#resolve" id="ref-for-resolve">resolve</a> <var>promise</var> with the result of <a data-link-type="dfn" href="#creating-a-new-memory-measurement" id="ref-for-creating-a-new-memory-measurement">creating a new memory measurement</a> given <var>intermediate memory measurement</var>.</p>
     </ol>
    </div>
-   <h3 class="heading settled" data-level="3.2" id="converting-an-intermediate-memory-measurement-to-the-result"><span class="secno">3.2. </span><span class="content">Converting an intermediate memory measurement to the result</span><a class="self-link" href="#converting-an-intermediate-memory-measurement-to-the-result"></a></h3>
+   <h3 class="heading settled" data-level="3.3" id="converting-an-intermediate-memory-measurement-to-the-result"><span class="secno">3.3. </span><span class="content">Converting an intermediate memory measurement to the result</span><a class="self-link" href="#converting-an-intermediate-memory-measurement-to-the-result"></a></h3>
    <div class="algorithm" data-algorithm="creating a new memory measurement">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="creating a new memory measurement|create a new memory measurement" data-noexport id="creating-a-new-memory-measurement">create a new memory measurement</dfn> given an <a data-link-type="dfn" href="#intermediate-memory-measurement" id="ref-for-intermediate-memory-measurement①">intermediate memory measurement</a> <var>intermediate measurement</var>: 
+     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="creating a new memory measurement|create a new memory measurement" data-noexport id="creating-a-new-memory-measurement">create a new memory measurement</dfn> given an <a data-link-type="dfn" href="#intermediate-memory-measurement" id="ref-for-intermediate-memory-measurement②">intermediate memory measurement</a> <var>intermediate measurement</var>: 
     <ol>
      <li data-md>
       <p>Let <var>bytes</var> be 0.</p>
@@ -2107,7 +2122,7 @@ It is a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#struct" id=
         <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-append" id="ref-for-list-append">Append</a> <var>breakdown entry</var> to <var>breakdown</var>.</p>
       </ol>
      <li data-md>
-      <p>Return a new <code class="idl"><a data-link-type="idl" href="#dictdef-memorymeasurement" id="ref-for-dictdef-memorymeasurement①">MemoryMeasurement</a></code> whose:</p>
+      <p>Return a new <code class="idl"><a data-link-type="idl" href="#dictdef-memorymeasurement" id="ref-for-dictdef-memorymeasurement③">MemoryMeasurement</a></code> whose:</p>
       <ul>
        <li data-md>
         <p><code class="idl"><a data-link-type="idl" href="#dom-memorymeasurement-bytes" id="ref-for-dom-memorymeasurement-bytes②">bytes</a></code> is <var>bytes</var>,</p>
@@ -2122,7 +2137,7 @@ It is a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#struct" id=
      <li data-md>
       <p>Let <var>attribution</var> a new <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list①">list</a>.</p>
      <li data-md>
-      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate②">For each</a> <code class="idl"><a data-link-type="idl" href="https://tc39.es/ecma262/#sec-code-realms" id="ref-for-sec-code-realms⑨">JavaScript realm</a></code> <var>realm</var> in <var>intermediate entry</var>’s <a data-link-type="dfn" href="#intermediate-memory-breakdown-entry-realms" id="ref-for-intermediate-memory-breakdown-entry-realms">realms</a>:</p>
+      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate②">For each</a> <a data-link-type="dfn" href="https://tc39.es/ecma262/#sec-code-realms" id="ref-for-sec-code-realms①⓪">JavaScript realm</a> <var>realm</var> in <var>intermediate entry</var>’s <a data-link-type="dfn" href="#intermediate-memory-breakdown-entry-realms" id="ref-for-intermediate-memory-breakdown-entry-realms">realms</a>:</p>
       <ol>
        <li data-md>
         <p>Let <var>attribution entry</var> be the result of <a data-link-type="dfn" href="#creating-a-new-memory-attribution" id="ref-for-creating-a-new-memory-attribution">creating a new memory attribution</a> given <var>realm</var>.</p>
@@ -2142,10 +2157,10 @@ It is a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#struct" id=
     </ol>
    </div>
    <div class="algorithm" data-algorithm="creating a new memory attribution">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="creating a new memory attribution|create a new memory attribution" data-noexport id="creating-a-new-memory-attribution">create a new memory attribution</dfn> given a <code class="idl"><a data-link-type="idl" href="https://tc39.es/ecma262/#sec-code-realms" id="ref-for-sec-code-realms①⓪">JavaScript realm</a></code> <var>realm</var>: 
+     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="creating a new memory attribution|create a new memory attribution" data-noexport id="creating-a-new-memory-attribution">create a new memory attribution</dfn> given a <a data-link-type="dfn" href="https://tc39.es/ecma262/#sec-code-realms" id="ref-for-sec-code-realms①①">JavaScript realm</a> <var>realm</var>: 
     <ol>
      <li data-md>
-      <p>Let <var>token</var> be <var>realm</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#global-object" id="ref-for-global-object①">global object</a>'s <a data-link-type="dfn" href="#windoworworkerglobalscope-memory-attribution-token" id="ref-for-windoworworkerglobalscope-memory-attribution-token">memory attribution token</a>.</p>
+      <p>Let <var>token</var> be <var>realm</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-global" id="ref-for-concept-realm-global③">global object</a>'s <a data-link-type="dfn" href="#windoworworkerglobalscope-memory-attribution-token" id="ref-for-windoworworkerglobalscope-memory-attribution-token">memory attribution token</a>.</p>
      <li data-md>
       <p>If <var>token</var>’s <a data-link-type="dfn" href="#memory-attribution-token-cross-origin-aggregated-flag" id="ref-for-memory-attribution-token-cross-origin-aggregated-flag">cross-origin aggregated flag</a> is true, then</p>
       <ol>
@@ -2153,30 +2168,30 @@ It is a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#struct" id=
         <p>Return a new <code class="idl"><a data-link-type="idl" href="#dictdef-memoryattribution" id="ref-for-dictdef-memoryattribution①">MemoryAttribution</a></code> whose:</p>
         <ul>
          <li data-md>
-          <p><code class="idl"><a data-link-type="idl" href="#dom-memoryattribution-url" id="ref-for-dom-memoryattribution-url①">url</a></code> is "cross-origin-url",</p>
+          <p><code class="idl"><a data-link-type="idl" href="#dom-memoryattribution-url" id="ref-for-dom-memoryattribution-url①">url</a></code> is "<code>cross-origin-url</code>",</p>
          <li data-md>
-          <p><code class="idl"><a data-link-type="idl" href="#dom-memoryattribution-container" id="ref-for-dom-memoryattribution-container①">container</a></code> is <var>token</var>’s <a data-link-type="dfn" href="#memory-attribution-token-container" id="ref-for-memory-attribution-token-container">container</a> if it is not null,</p>
+          <p><code class="idl"><a data-link-type="idl" href="#dom-memoryattribution-container" id="ref-for-dom-memoryattribution-container①">container</a></code> is <var>token</var>’s <a data-link-type="dfn" href="#memory-attribution-token-container" id="ref-for-memory-attribution-token-container">container</a> if it is not null; otherwise, the <code class="idl"><a data-link-type="idl" href="#dom-memoryattribution-container" id="ref-for-dom-memoryattribution-container②">container</a></code> entry is omitted,</p>
          <li data-md>
-          <p><code class="idl"><a data-link-type="idl" href="#dom-memoryattribution-scope" id="ref-for-dom-memoryattribution-scope①">scope</a></code> is "cross-origin-aggregated".</p>
+          <p><code class="idl"><a data-link-type="idl" href="#dom-memoryattribution-scope" id="ref-for-dom-memoryattribution-scope①">scope</a></code> is "<code>cross-origin-aggregated</code>".</p>
         </ul>
       </ol>
      <li data-md>
-      <p>Let <var>scope name</var> be the result of <a data-link-type="dfn" href="#get-the-global-scope-name" id="ref-for-get-the-global-scope-name">getting the global scope name</a> given <var>realm</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#global-object" id="ref-for-global-object②">global object</a>.</p>
+      <p>Let <var>scope name</var> be <a data-link-type="dfn" href="https://heycam.github.io/webidl/#dfn-identifier" id="ref-for-dfn-identifier">identifier</a> of <var>realm</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-global" id="ref-for-concept-realm-global④">global object</a>'s <a data-link-type="dfn" href="https://heycam.github.io/webidl/#dfn-interface" id="ref-for-dfn-interface">interface</a>.</p>
      <li data-md>
       <p>Return a new <code class="idl"><a data-link-type="idl" href="#dictdef-memoryattribution" id="ref-for-dictdef-memoryattribution②">MemoryAttribution</a></code> whose:</p>
       <ul>
        <li data-md>
         <p><code class="idl"><a data-link-type="idl" href="#dom-memoryattribution-url" id="ref-for-dom-memoryattribution-url②">url</a></code> is <var>realm</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-settings-object" id="ref-for-concept-realm-settings-object①">settings object</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-environment-creation-url" id="ref-for-concept-environment-creation-url">creation URL</a>,</p>
        <li data-md>
-        <p><code class="idl"><a data-link-type="idl" href="#dom-memoryattribution-container" id="ref-for-dom-memoryattribution-container②">container</a></code> is <var>token</var>’s <a data-link-type="dfn" href="#memory-attribution-token-container" id="ref-for-memory-attribution-token-container①">container</a> if it is not null,</p>
+        <p><code class="idl"><a data-link-type="idl" href="#dom-memoryattribution-container" id="ref-for-dom-memoryattribution-container③">container</a></code> is <var>token</var>’s <a data-link-type="dfn" href="#memory-attribution-token-container" id="ref-for-memory-attribution-token-container①">container</a> if it is not null,</p>
        <li data-md>
         <p><code class="idl"><a data-link-type="idl" href="#dom-memoryattribution-scope" id="ref-for-dom-memoryattribution-scope②">scope</a></code> is <var>scope name</var>.</p>
       </ul>
     </ol>
    </div>
-   <h3 class="heading settled" data-level="3.3" id="creating-or-obtaining-a-memory-attribution-token"><span class="secno">3.3. </span><span class="content">Creating or obtaining a memory attribution token</span><a class="self-link" href="#creating-or-obtaining-a-memory-attribution-token"></a></h3>
-   <div class="algorithm" data-algorithm="obtain window memory attribution token">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="obtain window memory attribution token|obtaining window memory attribution token" data-noexport id="obtain-window-memory-attribution-token">obtain window memory attribution token</dfn> given an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin" id="ref-for-concept-origin">origin</a> <var>origin</var>, an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin" id="ref-for-concept-origin①">origin</a> <var>parent origin</var>, an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin" id="ref-for-concept-origin②">origin</a> <var>top-level origin</var>,
+   <h3 class="heading settled" data-level="3.4" id="creating-or-obtaining-a-memory-attribution-token"><span class="secno">3.4. </span><span class="content">Creating or obtaining a memory attribution token</span><a class="self-link" href="#creating-or-obtaining-a-memory-attribution-token"></a></h3>
+   <div class="algorithm" data-algorithm="obtain a window memory attribution token">
+     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="obtain a window memory attribution token|obtaining a window memory attribution token" data-noexport id="obtain-a-window-memory-attribution-token">obtain a window memory attribution token</dfn> given an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin" id="ref-for-concept-origin">origin</a> <var>origin</var>, an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin" id="ref-for-concept-origin①">origin</a> <var>parent origin</var>, an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin" id="ref-for-concept-origin②">origin</a> <var>top-level origin</var>,
   an <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dom.html#htmlelement" id="ref-for-htmlelement">HTMLElement</a></code> <var>container element</var>, an <a data-link-type="dfn" href="#memory-attribution-token" id="ref-for-memory-attribution-token">memory attribution token</a> <var>parent token</var>: 
     <ol>
      <li data-md>
@@ -2227,8 +2242,8 @@ It is a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#struct" id=
       <p>Return <var>parent token</var>.</p>
     </ol>
    </div>
-   <div class="algorithm" data-algorithm="obtain worker memory attribution token">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="obtain worker memory attribution token|obtaining worker memory attribution token" data-noexport id="obtain-worker-memory-attribution-token">obtain worker memory attribution token</dfn> given <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/workers.html#workerglobalscope" id="ref-for-workerglobalscope">WorkerGlobalScope</a></code> <var>worker global scope</var>, an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object" id="ref-for-environment-settings-object①">environment settings object</a> <var>outside settings</var>: 
+   <div class="algorithm" data-algorithm="obtain a worker memory attribution token">
+     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="obtain a worker memory attribution token|obtaining a worker memory attribution token" data-noexport id="obtain-a-worker-memory-attribution-token">obtain a worker memory attribution token</dfn> given <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/workers.html#workerglobalscope" id="ref-for-workerglobalscope">WorkerGlobalScope</a></code> <var>worker global scope</var>, an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object" id="ref-for-environment-settings-object">environment settings object</a> <var>outside settings</var>: 
     <ol>
      <li data-md>
       <p>If <var>worker global scope</var> is a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/workers.html#dedicatedworkerglobalscope" id="ref-for-dedicatedworkerglobalscope">DedicatedWorkerGlobalScope</a></code>, then
@@ -2249,82 +2264,47 @@ It is a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#struct" id=
      To <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="extract container element attributes|extracting container element attributes" data-noexport id="extract-container-element-attributes">extract container element attributes</dfn> given an <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dom.html#htmlelement" id="ref-for-htmlelement①">HTMLElement</a></code> <var>container element</var>: 
     <ol>
      <li data-md>
-      <p>Switch on <var>container element</var>’s <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#dom-element-tagname" id="ref-for-dom-element-tagname">tagName</a></code>:</p>
+      <p>Switch on <var>container element</var>’s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-element-local-name" id="ref-for-concept-element-local-name">local name</a>:</p>
       <dl class="switch">
        <dt data-md>"iframe"
        <dd data-md>
         <p>Return a new <code class="idl"><a data-link-type="idl" href="#dictdef-memoryattributioncontainer" id="ref-for-dictdef-memoryattributioncontainer②">MemoryAttributionContainer</a></code> whose:</p>
         <ul>
          <li data-md>
-          <p><code class="idl"><a data-link-type="idl" href="#dom-memoryattributioncontainer-id" id="ref-for-dom-memoryattributioncontainer-id①">id</a></code> is <var>container element</var>’s <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#dom-element-id" id="ref-for-dom-element-id">id</a></code>,</p>
+          <p><code class="idl"><a data-link-type="idl" href="#dom-memoryattributioncontainer-id" id="ref-for-dom-memoryattributioncontainer-id①">id</a></code> is <var>container element</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#the-id-attribute" id="ref-for-the-id-attribute">id</a> attribute,</p>
          <li data-md>
-          <p><code class="idl"><a data-link-type="idl" href="#dom-memoryattributioncontainer-src" id="ref-for-dom-memoryattributioncontainer-src①">src</a></code> is <var>container element</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#dom-iframe-src" id="ref-for-dom-iframe-src">src</a></code>,</p>
+          <p><code class="idl"><a data-link-type="idl" href="#dom-memoryattributioncontainer-src" id="ref-for-dom-memoryattributioncontainer-src①">src</a></code> is <var>container element</var>’s <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-src" id="ref-for-attr-iframe-src">src</a></code> attribute,</p>
         </ul>
        <dt data-md>"frame"
        <dd data-md>
         <p>Return a new <code class="idl"><a data-link-type="idl" href="#dictdef-memoryattributioncontainer" id="ref-for-dictdef-memoryattributioncontainer③">MemoryAttributionContainer</a></code> whose:</p>
         <ul>
          <li data-md>
-          <p><code class="idl"><a data-link-type="idl" href="#dom-memoryattributioncontainer-id" id="ref-for-dom-memoryattributioncontainer-id②">id</a></code> is <var>container element</var>’s <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#dom-element-id" id="ref-for-dom-element-id①">id</a></code>,</p>
+          <p><code class="idl"><a data-link-type="idl" href="#dom-memoryattributioncontainer-id" id="ref-for-dom-memoryattributioncontainer-id②">id</a></code> is <var>container element</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#the-id-attribute" id="ref-for-the-id-attribute①">id</a> attribute,</p>
          <li data-md>
-          <p><code class="idl"><a data-link-type="idl" href="#dom-memoryattributioncontainer-src" id="ref-for-dom-memoryattributioncontainer-src②">src</a></code> is <var>container element</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/obsolete.html#dom-frame-src" id="ref-for-dom-frame-src">src</a></code>,</p>
+          <p><code class="idl"><a data-link-type="idl" href="#dom-memoryattributioncontainer-src" id="ref-for-dom-memoryattributioncontainer-src②">src</a></code> is <var>container element</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/obsolete.html##dom-frame-src" id="ref-for-#dom-frame-src">src</a> attribute,</p>
         </ul>
        <dt data-md>"object"
        <dd data-md>
         <p>Return a new <code class="idl"><a data-link-type="idl" href="#dictdef-memoryattributioncontainer" id="ref-for-dictdef-memoryattributioncontainer④">MemoryAttributionContainer</a></code> whose:</p>
         <ul>
          <li data-md>
-          <p><code class="idl"><a data-link-type="idl" href="#dom-memoryattributioncontainer-id" id="ref-for-dom-memoryattributioncontainer-id③">id</a></code> is <var>container element</var>’s <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#dom-element-id" id="ref-for-dom-element-id②">id</a></code>,</p>
+          <p><code class="idl"><a data-link-type="idl" href="#dom-memoryattributioncontainer-id" id="ref-for-dom-memoryattributioncontainer-id③">id</a></code> is <var>container element</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#the-id-attribute" id="ref-for-the-id-attribute②">id</a> attribute,</p>
          <li data-md>
-          <p><code class="idl"><a data-link-type="idl" href="#dom-memoryattributioncontainer-src" id="ref-for-dom-memoryattributioncontainer-src③">src</a></code> is <var>container element</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#dom-object-data" id="ref-for-dom-object-data①">data</a></code>,</p>
+          <p><code class="idl"><a data-link-type="idl" href="#dom-memoryattributioncontainer-src" id="ref-for-dom-memoryattributioncontainer-src③">src</a></code> is <var>container element</var>’s <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-object-data" id="ref-for-attr-object-data①">data</a></code> attribute,</p>
         </ul>
       </dl>
     </ol>
    </div>
-   <div class="algorithm" data-algorithm="get the global scope name">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="get the global scope name|getting the global scope name" data-noexport id="get-the-global-scope-name">get the global scope name</dfn> given a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/webappapis.html#windoworworkerglobalscope" id="ref-for-windoworworkerglobalscope②">WindowOrWorkerGlobalScope</a></code> <var>scope</var>: 
-    <ol>
-     <li data-md>
-      <p>Switch on <var>scope</var>:</p>
-      <dl class="switch">
-       <dt data-md>if <var>scope</var> is a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window②">Window</a></code>
-       <dd data-md>
-        <p>Return "Window".</p>
-       <dt data-md>if <var>scope</var> is a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/workers.html#dedicatedworkerglobalscope" id="ref-for-dedicatedworkerglobalscope①">DedicatedWorkerGlobalScope</a></code>
-       <dd data-md>
-        <p>Return "DedicatedWorkerGlobalScope".</p>
-       <dt data-md>if <var>scope</var> is a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/workers.html#sharedworkerglobalscope" id="ref-for-sharedworkerglobalscope②">SharedWorkerGlobalScope</a></code>
-       <dd data-md>
-        <p>Return "SharedWorkerGlobalScope".</p>
-       <dt data-md>if <var>scope</var> is a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/ServiceWorker/#serviceworkerglobalscope" id="ref-for-serviceworkerglobalscope②">ServiceWorkerGlobalScope</a></code>
-       <dd data-md>
-        <p>Return "ServiceWorkerGlobalScope".</p>
-      </dl>
-    </ol>
-   </div>
    <h2 class="heading settled" data-level="4" id="integration-with-the-existing-specification"><span class="secno">4. </span><span class="content">Integration with the existing specification</span><a class="self-link" href="#integration-with-the-existing-specification"></a></h2>
-   <h3 class="heading settled" data-level="4.1" id="extensions-to-performance"><span class="secno">4.1. </span><span class="content">Extensions to the <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/hr-time-2#sec-performance" id="ref-for-sec-performance">Performance</a></code> interface</span><a class="self-link" href="#extensions-to-performance"></a></h3>
-<pre class="idl highlight def">[<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed" id="ref-for-Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
-<c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://www.w3.org/TR/hr-time-2#sec-performance" id="ref-for-sec-performance①"><c- g>Performance</c-></a> {
-  <c- b>Promise</c->&lt;<a class="n" data-link-type="idl-name" href="#dictdef-memorymeasurement" id="ref-for-dictdef-memorymeasurement②"><c- n>MemoryMeasurement</c-></a>> <dfn class="dfn-paneled idl-code" data-dfn-for="Performance" data-dfn-type="method" data-export data-lt="measureMemory()" id="dom-performance-measurememory"><code><c- g>measureMemory</c-></code></dfn>();
-};
-</pre>
-   <dl class="domintro">
-    <dl>
-     <dt data-md><code>self . <code class="idl"><a data-link-type="idl" href="#dom-performance-measurememory" id="ref-for-dom-performance-measurememory">measureMemory</a></code></code>
-     <dd data-md>
-      <p>A method that performs an asynchronous memory measurement. </p>
-    </dl>
-    <p></p>
-   </dl>
-   <h3 class="heading settled" data-level="4.2" id="extension-to-window-or-worker-global-scope"><span class="secno">4.2. </span><span class="content">Extension to <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/webappapis.html#windoworworkerglobalscope" id="ref-for-windoworworkerglobalscope③">WindowOrWorkerGlobalScope</a></code></span><a class="self-link" href="#extension-to-window-or-worker-global-scope"></a></h3>
-    A new internal field is added to <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/webappapis.html#windoworworkerglobalscope" id="ref-for-windoworworkerglobalscope④">WindowOrWorkerGlobalScope</a></code>: 
+   <h3 class="heading settled" data-level="4.1" id="extension-to-window-or-worker-global-scope"><span class="secno">4.1. </span><span class="content">Extension to <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/webappapis.html#windoworworkerglobalscope" id="ref-for-windoworworkerglobalscope①">WindowOrWorkerGlobalScope</a></code></span><a class="self-link" href="#extension-to-window-or-worker-global-scope"></a></h3>
+    A new internal field is added to <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/webappapis.html#windoworworkerglobalscope" id="ref-for-windoworworkerglobalscope②">WindowOrWorkerGlobalScope</a></code>: 
    <dl>
-    <dt data-md>A <dfn class="dfn-paneled" data-dfn-for="WindowOrWorkerGlobalScope" data-dfn-type="dfn" data-noexport id="windoworworkerglobalscope-memory-attribution-token">memory attribution token<dfn></dfn></dfn>
+    <dt data-md>A <dfn class="dfn-paneled" data-dfn-for="WindowOrWorkerGlobalScope" data-dfn-type="dfn" data-noexport id="windoworworkerglobalscope-memory-attribution-token">memory attribution token</dfn>
     <dd data-md>
      <p>An <a data-link-type="dfn" href="#memory-attribution-token" id="ref-for-memory-attribution-token⑤">memory attribution token</a> that is used for reporting the memory usage of this environment.</p>
    </dl>
-   <h3 class="heading settled" data-level="4.3" id="extensions-to-the-existing-algorithms"><span class="secno">4.3. </span><span class="content">Extensions to the existing algorithms</span><a class="self-link" href="#extensions-to-the-existing-algorithms"></a></h3>
+   <h3 class="heading settled" data-level="4.2" id="extensions-to-the-existing-algorithms"><span class="secno">4.2. </span><span class="content">Extensions to the existing algorithms</span><a class="self-link" href="#extensions-to-the-existing-algorithms"></a></h3>
    <p>The <a data-link-type="abstract-op" href="https://html.spec.whatwg.org/multipage/workers.html#run-a-worker" id="ref-for-run-a-worker">run a worker</a> algorithm sets
 the <a data-link-type="dfn" href="#windoworworkerglobalscope-memory-attribution-token" id="ref-for-windoworworkerglobalscope-memory-attribution-token②">memory attribution token</a> field of the newly created global object in step 6:</p>
    <blockquote>
@@ -2336,7 +2316,7 @@ the <a data-link-type="dfn" href="#windoworworkerglobalscope-memory-attribution-
        <li data-md>
         <p>...</p>
        <li data-md>
-        <p>Set global object’s <a data-link-type="dfn" href="#windoworworkerglobalscope-memory-attribution-token" id="ref-for-windoworworkerglobalscope-memory-attribution-token③">memory attribution token</a> to the result of <a data-link-type="dfn" href="#obtain-worker-memory-attribution-token" id="ref-for-obtain-worker-memory-attribution-token">obtaining worker memory attribution token</a> given
+        <p>Set global object’s <a data-link-type="dfn" href="#windoworworkerglobalscope-memory-attribution-token" id="ref-for-windoworworkerglobalscope-memory-attribution-token③">memory attribution token</a> to the result of <a data-link-type="dfn" href="#obtain-a-worker-memory-attribution-token" id="ref-for-obtain-a-worker-memory-attribution-token">obtaining a worker memory attribution token</a> given
  the global object and <var>outside settings</var>.</p>
       </ul>
     </ol>
@@ -2355,12 +2335,12 @@ the <a data-link-type="dfn" href="#windoworworkerglobalscope-memory-attribution-
          <li data-md>
           <p>Let <var>parentToken</var> be <var>parentEnvironment</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-global" id="ref-for-concept-settings-object-global①">global object</a>'s <a data-link-type="dfn" href="#windoworworkerglobalscope-memory-attribution-token" id="ref-for-windoworworkerglobalscope-memory-attribution-token⑤">memory attribution token</a>.</p>
          <li data-md>
-          <p>Set <var>token</var> to the result of <a data-link-type="dfn" href="#obtain-window-memory-attribution-token" id="ref-for-obtain-window-memory-attribution-token">obtaining window memory attribution token</a> with <var>origin</var>, <var>parentEnvironment</var>’s origin, <var>topLevelOrigin</var>, <var>browsingContext</var>’s container, <var>parentToken</var>.</p>
+          <p>Set <var>token</var> to the result of <a data-link-type="dfn" href="#obtain-a-window-memory-attribution-token" id="ref-for-obtain-a-window-memory-attribution-token">obtaining a window memory attribution token</a> with <var>origin</var>, <var>parentEnvironment</var>’s origin, <var>topLevelOrigin</var>, <var>browsingContext</var>’s container, <var>parentToken</var>.</p>
         </ol>
        <li data-md>
-        <p>Else, set <var>token</var> to the result of <a data-link-type="dfn" href="#obtain-window-memory-attribution-token" id="ref-for-obtain-window-memory-attribution-token①">obtaining window memory attribution token</a> with <var>origin</var>, null <var>topLevelOrigin</var>, null, null.</p>
+        <p>Else, set <var>token</var> to the result of <a data-link-type="dfn" href="#obtain-a-window-memory-attribution-token" id="ref-for-obtain-a-window-memory-attribution-token①">obtaining a window memory attribution token</a> with <var>origin</var>, null <var>topLevelOrigin</var>, null, null.</p>
        <li data-md>
-        <p>Let <var>window global scope</var> be the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-global" id="ref-for-concept-realm-global">global object</a> of <var>realm execution context</var>’s Realm component.</p>
+        <p>Let <var>window global scope</var> be the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-global" id="ref-for-concept-realm-global⑤">global object</a> of <var>realm execution context</var>’s Realm component.</p>
        <li data-md>
         <p>Set <var>window global scope</var>’s <a data-link-type="dfn" href="#windoworworkerglobalscope-memory-attribution-token" id="ref-for-windoworworkerglobalscope-memory-attribution-token⑥">memory attribution token</a> to <var>token</var>.</p>
       </ol>
@@ -2372,19 +2352,19 @@ the <a data-link-type="dfn" href="#windoworworkerglobalscope-memory-attribution-
      <li data-md>
       <p>Let <var>token</var> be an empty token.</p>
      <li data-md>
-      <p>If <var>embedder</var> is null, then set <var>token</var> to the result of <a data-link-type="dfn" href="#obtain-window-memory-attribution-token" id="ref-for-obtain-window-memory-attribution-token②">obtaining window memory attribution token</a> with <var>origin</var>,
+      <p>If <var>embedder</var> is null, then set <var>token</var> to the result of <a data-link-type="dfn" href="#obtain-a-window-memory-attribution-token" id="ref-for-obtain-a-window-memory-attribution-token②">obtaining a window memory attribution token</a> with <var>origin</var>,
   null, <var>topLevelOrigin</var>, null, null.</p>
      <li data-md>
-      <p>Else, set <var>token</var> to the result of <a data-link-type="dfn" href="#obtain-window-memory-attribution-token" id="ref-for-obtain-window-memory-attribution-token③">obtaining window memory attribution token</a> with <var>origin</var>, <var>embedder</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#relevant-settings-object" id="ref-for-relevant-settings-object">relevant settings object</a>'s origin, <var>topLevelOrigin</var>, <var>embedder</var>, <var>embedder</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global">relevant global object</a>'s <a data-link-type="dfn" href="#windoworworkerglobalscope-memory-attribution-token" id="ref-for-windoworworkerglobalscope-memory-attribution-token⑧">memory attribution token</a>.</p>
+      <p>Else, set <var>token</var> to the result of <a data-link-type="dfn" href="#obtain-a-window-memory-attribution-token" id="ref-for-obtain-a-window-memory-attribution-token③">obtaining a window memory attribution token</a> with <var>origin</var>, <var>embedder</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#relevant-settings-object" id="ref-for-relevant-settings-object">relevant settings object</a>'s origin, <var>topLevelOrigin</var>, <var>embedder</var>, <var>embedder</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global①">relevant global object</a>'s <a data-link-type="dfn" href="#windoworworkerglobalscope-memory-attribution-token" id="ref-for-windoworworkerglobalscope-memory-attribution-token⑧">memory attribution token</a>.</p>
      <li data-md>
-      <p>Let <var>window global scope</var> be the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-global" id="ref-for-concept-realm-global①">global object</a> of <var>realm execution context</var>’s Realm component.</p>
+      <p>Let <var>window global scope</var> be the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-global" id="ref-for-concept-realm-global⑥">global object</a> of <var>realm execution context</var>’s Realm component.</p>
      <li data-md>
       <p>Set <var>window global scope</var>’s <a data-link-type="dfn" href="#windoworworkerglobalscope-memory-attribution-token" id="ref-for-windoworworkerglobalscope-memory-attribution-token⑨">memory attribution token</a> to <var>token</var>.</p>
     </ol>
    </blockquote>
    <h2 class="heading settled" data-level="5" id="acknowledgements"><span class="secno">5. </span><span class="content">Acknowledgements</span><a class="self-link" href="#acknowledgements"></a></h2>
     Thanks to Domenic Denicola and Shu-yu Guo for contributing to the API design and for reviewing this specification. 
-   <p>Without implying any endorsement of this specification, thanks to Anne van Kesteren, Boris Zbarsky, Dominik Inführ, Chris Hamilton, Hannes Payer, Joe Mason, Kentaro Hara, L. David Baron, Mathias Bynens, Matthew Bolohan, Michael Lippautz, Neil Mckay Olga Belomestnykh, Per Parker, Philipp Weis, and Yoav Weiss, for their feedback and contributions.</p>
+   <p>Also thanks to Anne van Kesteren, Boris Zbarsky, Dominik Inführ, Chris Hamilton, Hannes Payer, Joe Mason, Kentaro Hara, L. David Baron, Mathias Bynens, Matthew Bolohan, Michael Lippautz, Neil Mckay Olga Belomestnykh, Per Parker, Philipp Weis, and Yoav Weiss, for their feedback and contributions.</p>
   </main>
 <script>
 (function() {
@@ -2533,40 +2513,37 @@ the <a data-link-type="dfn" href="#windoworworkerglobalscope-memory-attribution-
      <li><a href="#memory-attribution-token-container">dfn for memory attribution token</a><span>, in §2.3</span>
      <li><a href="#dom-memoryattribution-container">dict-member for MemoryAttribution</a><span>, in §2.1</span>
     </ul>
-   <li><a href="#creating-a-new-memory-attribution">create a new memory attribution</a><span>, in §3.2</span>
-   <li><a href="#creating-a-new-memory-breakdown-entry">create a new memory breakdown entry</a><span>, in §3.2</span>
-   <li><a href="#creating-a-new-memory-measurement">create a new memory measurement</a><span>, in §3.2</span>
-   <li><a href="#creating-a-new-memory-attribution">creating a new memory attribution</a><span>, in §3.2</span>
-   <li><a href="#creating-a-new-memory-breakdown-entry">creating a new memory breakdown entry</a><span>, in §3.2</span>
-   <li><a href="#creating-a-new-memory-measurement">creating a new memory measurement</a><span>, in §3.2</span>
+   <li><a href="#creating-a-new-memory-attribution">create a new memory attribution</a><span>, in §3.3</span>
+   <li><a href="#creating-a-new-memory-breakdown-entry">create a new memory breakdown entry</a><span>, in §3.3</span>
+   <li><a href="#creating-a-new-memory-measurement">create a new memory measurement</a><span>, in §3.3</span>
+   <li><a href="#creating-a-new-memory-attribution">creating a new memory attribution</a><span>, in §3.3</span>
+   <li><a href="#creating-a-new-memory-breakdown-entry">creating a new memory breakdown entry</a><span>, in §3.3</span>
+   <li><a href="#creating-a-new-memory-measurement">creating a new memory measurement</a><span>, in §3.3</span>
    <li><a href="#memory-attribution-token-cross-origin-aggregated-flag">cross-origin aggregated flag</a><span>, in §2.3</span>
-   <li><a href="#extract-container-element-attributes">extract container element attributes</a><span>, in §3.3</span>
-   <li><a href="#extract-container-element-attributes">extracting container element attributes</a><span>, in §3.3</span>
-   <li><a href="#getting-all-agent-clusters">get all agent clusters</a><span>, in §3.1</span>
-   <li><a href="#get-the-global-scope-name">get the global scope name</a><span>, in §3.3</span>
-   <li><a href="#getting-all-agent-clusters">getting all agent clusters</a><span>, in §3.1</span>
-   <li><a href="#get-the-global-scope-name">getting the global scope name</a><span>, in §3.3</span>
+   <li><a href="#extract-container-element-attributes">extract container element attributes</a><span>, in §3.4</span>
+   <li><a href="#extract-container-element-attributes">extracting container element attributes</a><span>, in §3.4</span>
+   <li><a href="#getting-all-agent-clusters">get all agent clusters</a><span>, in §3.2</span>
+   <li><a href="#getting-all-agent-clusters">getting all agent clusters</a><span>, in §3.2</span>
    <li><a href="#dom-memoryattributioncontainer-id">id</a><span>, in §2.1</span>
-   <li><a href="#implementation-defined-memory-measurement">implementation-defined memory measurement</a><span>, in §3.1</span>
+   <li><a href="#implementation-defined-memory-measurement">implementation-defined memory measurement</a><span>, in §3.2</span>
    <li><a href="#intermediate-memory-breakdown-entry">intermediate memory breakdown entry</a><span>, in §2.2</span>
    <li><a href="#intermediate-memory-measurement">intermediate memory measurement</a><span>, in §2.2</span>
-   <li><a href="#dom-performance-measurememory">measureMemory()</a><span>, in §4.1</span>
+   <li><a href="#dom-performance-measurememory">measureMemory()</a><span>, in §3.2</span>
    <li><a href="#dictdef-memoryattribution">MemoryAttribution</a><span>, in §2.1</span>
    <li><a href="#dictdef-memoryattributioncontainer">MemoryAttributionContainer</a><span>, in §2.1</span>
    <li>
     memory attribution token
     <ul>
      <li><a href="#memory-attribution-token">definition of</a><span>, in §2.3</span>
-     <li><a href="#windoworworkerglobalscope-memory-attribution-token">dfn for WindowOrWorkerGlobalScope</a><span>, in §4.2</span>
+     <li><a href="#windoworworkerglobalscope-memory-attribution-token">dfn for WindowOrWorkerGlobalScope</a><span>, in §4.1</span>
     </ul>
    <li><a href="#dictdef-memorybreakdownentry">MemoryBreakdownEntry</a><span>, in §2.1</span>
    <li><a href="#dictdef-memorymeasurement">MemoryMeasurement</a><span>, in §2.1</span>
-   <li><a href="#memory-measurement-allowed-predicate">memory measurement allowed predicate</a><span>, in §3.1</span>
-   <li><a href="#obtain-window-memory-attribution-token">obtaining window memory attribution token</a><span>, in §3.3</span>
-   <li><a href="#obtain-worker-memory-attribution-token">obtaining worker memory attribution token</a><span>, in §3.3</span>
-   <li><a href="#obtain-window-memory-attribution-token">obtain window memory attribution token</a><span>, in §3.3</span>
-   <li><a href="#obtain-worker-memory-attribution-token">obtain worker memory attribution token</a><span>, in §3.3</span>
-   <li><a href="#performancemeasurememory">performance.measureMemory</a><span>, in §3.1</span>
+   <li><a href="#memory-measurement-allowed-predicate">memory measurement allowed predicate</a><span>, in §3.2</span>
+   <li><a href="#obtain-a-window-memory-attribution-token">obtain a window memory attribution token</a><span>, in §3.4</span>
+   <li><a href="#obtain-a-worker-memory-attribution-token">obtain a worker memory attribution token</a><span>, in §3.4</span>
+   <li><a href="#obtain-a-window-memory-attribution-token">obtaining a window memory attribution token</a><span>, in §3.4</span>
+   <li><a href="#obtain-a-worker-memory-attribution-token">obtaining a worker memory attribution token</a><span>, in §3.4</span>
    <li><a href="#intermediate-memory-breakdown-entry-realms">realms</a><span>, in §2.2</span>
    <li><a href="#dom-memoryattribution-scope">scope</a><span>, in §2.1</span>
    <li><a href="#dom-memoryattributioncontainer-src">src</a><span>, in §2.1</span>
@@ -2574,22 +2551,36 @@ the <a data-link-type="dfn" href="#windoworworkerglobalscope-memory-attribution-
    <li><a href="#intermediate-memory-breakdown-entry-user-agent-specific-types">user agent specific types</a><span>, in §2.2</span>
    <li><a href="#dom-memorybreakdownentry-useragentspecifictypes">userAgentSpecificTypes</a><span>, in §2.1</span>
   </ul>
-  <aside class="dfn-panel" data-for="term-for-dom-element-id">
-   <a href="https://dom.spec.whatwg.org/#dom-element-id">https://dom.spec.whatwg.org/#dom-element-id</a><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="term-for-concept-element-local-name">
+   <a href="https://dom.spec.whatwg.org/#concept-element-local-name">https://dom.spec.whatwg.org/#concept-element-local-name</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-element-id">3.3. Creating or obtaining a memory attribution token</a> <a href="#ref-for-dom-element-id①">(2)</a> <a href="#ref-for-dom-element-id②">(3)</a>
+    <li><a href="#ref-for-concept-element-local-name">3.4. Creating or obtaining a memory attribution token</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-element-tagname">
-   <a href="https://dom.spec.whatwg.org/#dom-element-tagname">https://dom.spec.whatwg.org/#dom-element-tagname</a><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="term-for-sec-agents">
+   <a href="https://tc39.es/ecma262/#sec-agents">https://tc39.es/ecma262/#sec-agents</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-element-tagname">3.3. Creating or obtaining a memory attribution token</a>
+    <li><a href="#ref-for-sec-agents">3.2. Top-level algorithms</a> <a href="#ref-for-sec-agents①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-sec-agent-clusters">
    <a href="https://tc39.es/ecma262/#sec-agent-clusters">https://tc39.es/ecma262/#sec-agent-clusters</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-sec-agent-clusters">2.2. Intermediate memory measurement</a>
+    <li><a href="#ref-for-sec-agent-clusters①">3.2. Top-level algorithms</a> <a href="#ref-for-sec-agent-clusters②">(2)</a> <a href="#ref-for-sec-agent-clusters③">(3)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-sec-agent">
+   <a href="https://tc39.es/ecma262/#sec-agent">https://tc39.es/ecma262/#sec-agent</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-sec-agent">3.2. Top-level algorithms</a> <a href="#ref-for-sec-agent①">(2)</a> <a href="#ref-for-sec-agent②">(3)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-sec-agent-clusters">
+   <a href="https://tc39.es/ecma262/#sec-agent-clusters">https://tc39.es/ecma262/#sec-agent-clusters</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-sec-agent-clusters">2.2. Intermediate memory measurement</a>
+    <li><a href="#ref-for-sec-agent-clusters①">3.2. Top-level algorithms</a> <a href="#ref-for-sec-agent-clusters②">(2)</a> <a href="#ref-for-sec-agent-clusters③">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-sec-code-realms">
@@ -2598,8 +2589,8 @@ the <a data-link-type="dfn" href="#windoworworkerglobalscope-memory-attribution-
     <li><a href="#ref-for-sec-code-realms">2.1. Memory measurement result</a> <a href="#ref-for-sec-code-realms①">(2)</a> <a href="#ref-for-sec-code-realms②">(3)</a> <a href="#ref-for-sec-code-realms③">(4)</a> <a href="#ref-for-sec-code-realms④">(5)</a>
     <li><a href="#ref-for-sec-code-realms⑤">2.2. Intermediate memory measurement</a>
     <li><a href="#ref-for-sec-code-realms⑥">2.3. Memory attribution token</a> <a href="#ref-for-sec-code-realms⑦">(2)</a>
-    <li><a href="#ref-for-sec-code-realms⑧">3.1. Top-level algorithms</a>
-    <li><a href="#ref-for-sec-code-realms⑨">3.2. Converting an intermediate memory measurement to the result</a> <a href="#ref-for-sec-code-realms①⓪">(2)</a>
+    <li><a href="#ref-for-sec-code-realms⑧">3.2. Top-level algorithms</a> <a href="#ref-for-sec-code-realms⑨">(2)</a>
+    <li><a href="#ref-for-sec-code-realms①⓪">3.3. Converting an intermediate memory measurement to the result</a> <a href="#ref-for-sec-code-realms①①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-sec-code-realms">
@@ -2608,174 +2599,159 @@ the <a data-link-type="dfn" href="#windoworworkerglobalscope-memory-attribution-
     <li><a href="#ref-for-sec-code-realms">2.1. Memory measurement result</a> <a href="#ref-for-sec-code-realms①">(2)</a> <a href="#ref-for-sec-code-realms②">(3)</a> <a href="#ref-for-sec-code-realms③">(4)</a> <a href="#ref-for-sec-code-realms④">(5)</a>
     <li><a href="#ref-for-sec-code-realms⑤">2.2. Intermediate memory measurement</a>
     <li><a href="#ref-for-sec-code-realms⑥">2.3. Memory attribution token</a> <a href="#ref-for-sec-code-realms⑦">(2)</a>
-    <li><a href="#ref-for-sec-code-realms⑧">3.1. Top-level algorithms</a>
-    <li><a href="#ref-for-sec-code-realms⑨">3.2. Converting an intermediate memory measurement to the result</a> <a href="#ref-for-sec-code-realms①⓪">(2)</a>
+    <li><a href="#ref-for-sec-code-realms⑧">3.2. Top-level algorithms</a> <a href="#ref-for-sec-code-realms⑨">(2)</a>
+    <li><a href="#ref-for-sec-code-realms①⓪">3.3. Converting an intermediate memory measurement to the result</a> <a href="#ref-for-sec-code-realms①①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-sec-performance">
-   <a href="https://www.w3.org/TR/hr-time-2#sec-performance">https://www.w3.org/TR/hr-time-2#sec-performance</a><b>Referenced in:</b>
+   <a href="https://w3c.github.io/hr-time/#sec-performance">https://w3c.github.io/hr-time/#sec-performance</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-sec-performance">4.1. Extensions to the Performance interface</a> <a href="#ref-for-sec-performance①">(2)</a>
+    <li><a href="#ref-for-sec-performance">3.1. Extensions to the Performance interface</a> <a href="#ref-for-sec-performance①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dedicatedworkerglobalscope">
    <a href="https://html.spec.whatwg.org/multipage/workers.html#dedicatedworkerglobalscope">https://html.spec.whatwg.org/multipage/workers.html#dedicatedworkerglobalscope</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dedicatedworkerglobalscope">3.3. Creating or obtaining a memory attribution token</a> <a href="#ref-for-dedicatedworkerglobalscope①">(2)</a>
+    <li><a href="#ref-for-dedicatedworkerglobalscope">3.4. Creating or obtaining a memory attribution token</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-htmlelement">
    <a href="https://html.spec.whatwg.org/multipage/dom.html#htmlelement">https://html.spec.whatwg.org/multipage/dom.html#htmlelement</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-htmlelement">3.3. Creating or obtaining a memory attribution token</a> <a href="#ref-for-htmlelement①">(2)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-htmlobjectelement">
-   <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#htmlobjectelement">https://html.spec.whatwg.org/multipage/iframe-embed-object.html#htmlobjectelement</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-htmlobjectelement">2.1. Memory measurement result</a>
+    <li><a href="#ref-for-htmlelement">3.4. Creating or obtaining a memory attribution token</a> <a href="#ref-for-htmlelement①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-sharedworkerglobalscope">
    <a href="https://html.spec.whatwg.org/multipage/workers.html#sharedworkerglobalscope">https://html.spec.whatwg.org/multipage/workers.html#sharedworkerglobalscope</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-sharedworkerglobalscope">3.1. Top-level algorithms</a>
-    <li><a href="#ref-for-sharedworkerglobalscope①">3.3. Creating or obtaining a memory attribution token</a> <a href="#ref-for-sharedworkerglobalscope②">(2)</a>
+    <li><a href="#ref-for-sharedworkerglobalscope">3.2. Top-level algorithms</a>
+    <li><a href="#ref-for-sharedworkerglobalscope①">3.4. Creating or obtaining a memory attribution token</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-window">
    <a href="https://html.spec.whatwg.org/multipage/window-object.html#window">https://html.spec.whatwg.org/multipage/window-object.html#window</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-window">3.1. Top-level algorithms</a> <a href="#ref-for-window①">(2)</a>
-    <li><a href="#ref-for-window②">3.3. Creating or obtaining a memory attribution token</a>
+    <li><a href="#ref-for-window">3.2. Top-level algorithms</a> <a href="#ref-for-window①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-windoworworkerglobalscope">
    <a href="https://html.spec.whatwg.org/multipage/webappapis.html#windoworworkerglobalscope">https://html.spec.whatwg.org/multipage/webappapis.html#windoworworkerglobalscope</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-windoworworkerglobalscope">2.3. Memory attribution token</a>
-    <li><a href="#ref-for-windoworworkerglobalscope①">3.1. Top-level algorithms</a>
-    <li><a href="#ref-for-windoworworkerglobalscope②">3.3. Creating or obtaining a memory attribution token</a>
-    <li><a href="#ref-for-windoworworkerglobalscope③">4.2. Extension to WindowOrWorkerGlobalScope</a> <a href="#ref-for-windoworworkerglobalscope④">(2)</a>
+    <li><a href="#ref-for-windoworworkerglobalscope①">4.1. Extension to WindowOrWorkerGlobalScope</a> <a href="#ref-for-windoworworkerglobalscope②">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-workerglobalscope">
    <a href="https://html.spec.whatwg.org/multipage/workers.html#workerglobalscope">https://html.spec.whatwg.org/multipage/workers.html#workerglobalscope</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-workerglobalscope">3.3. Creating or obtaining a memory attribution token</a>
+    <li><a href="#ref-for-workerglobalscope">3.4. Creating or obtaining a memory attribution token</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-concept-document-bc">
-   <a href="https://html.spec.whatwg.org/multipage/browsers.html#concept-document-bc">https://html.spec.whatwg.org/multipage/browsers.html#concept-document-bc</a><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="term-for-window-bc">
+   <a href="https://html.spec.whatwg.org/multipage/window-object.html#window-bc">https://html.spec.whatwg.org/multipage/window-object.html#window-bc</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-concept-document-bc">3.1. Top-level algorithms</a>
+    <li><a href="#ref-for-window-bc">3.2. Top-level algorithms</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-browsing-context-group">
    <a href="https://html.spec.whatwg.org/multipage/browsers.html#browsing-context-group">https://html.spec.whatwg.org/multipage/browsers.html#browsing-context-group</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-browsing-context-group">3.1. Top-level algorithms</a>
+    <li><a href="#ref-for-browsing-context-group">3.2. Top-level algorithms</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-concept-environment-creation-url">
    <a href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-environment-creation-url">https://html.spec.whatwg.org/multipage/webappapis.html#concept-environment-creation-url</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-concept-environment-creation-url">3.2. Converting an intermediate memory measurement to the result</a>
+    <li><a href="#ref-for-concept-environment-creation-url">3.3. Converting an intermediate memory measurement to the result</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-current-global-object">
-   <a href="https://html.spec.whatwg.org/multipage/webappapis.html#current-global-object">https://html.spec.whatwg.org/multipage/webappapis.html#current-global-object</a><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="term-for-attr-object-data">
+   <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-object-data">https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-object-data</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-current-global-object">3.1. Top-level algorithms</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-current-settings-object">
-   <a href="https://html.spec.whatwg.org/multipage/webappapis.html#current-settings-object">https://html.spec.whatwg.org/multipage/webappapis.html#current-settings-object</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-current-settings-object">3.1. Top-level algorithms</a> <a href="#ref-for-current-settings-object①">(2)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-object-data">
-   <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#dom-object-data">https://html.spec.whatwg.org/multipage/iframe-embed-object.html#dom-object-data</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-dom-object-data">2.1. Memory measurement result</a>
-    <li><a href="#ref-for-dom-object-data①">3.3. Creating or obtaining a memory attribution token</a>
+    <li><a href="#ref-for-attr-object-data">2.1. Memory measurement result</a>
+    <li><a href="#ref-for-attr-object-data①">3.4. Creating or obtaining a memory attribution token</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-environment-settings-object">
    <a href="https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object">https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-environment-settings-object">3.1. Top-level algorithms</a>
-    <li><a href="#ref-for-environment-settings-object①">3.3. Creating or obtaining a memory attribution token</a>
+    <li><a href="#ref-for-environment-settings-object">3.4. Creating or obtaining a memory attribution token</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-concept-settings-object-global">
    <a href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-global">https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-global</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-concept-settings-object-global">3.3. Creating or obtaining a memory attribution token</a>
-    <li><a href="#ref-for-concept-settings-object-global①">4.3. Extensions to the existing algorithms</a>
+    <li><a href="#ref-for-concept-settings-object-global">3.4. Creating or obtaining a memory attribution token</a>
+    <li><a href="#ref-for-concept-settings-object-global①">4.2. Extensions to the existing algorithms</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-in-parallel">
+   <a href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-in-parallel">3.2. Top-level algorithms</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-the-object-element">
+   <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-object-element">https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-object-element</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-the-object-element">2.1. Memory measurement result</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-concept-settings-object-origin">
    <a href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-origin">https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-origin</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-concept-settings-object-origin">3.1. Top-level algorithms</a>
+    <li><a href="#ref-for-concept-settings-object-origin">3.2. Top-level algorithms</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-environment-settings-object&apos;s-realm">
-   <a href="https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object&apos;s-realm">https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object's-realm</a><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="term-for-queue-a-global-task">
+   <a href="https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-global-task">https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-global-task</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-environment-settings-object&apos;s-realm">3.1. Top-level algorithms</a>
+    <li><a href="#ref-for-queue-a-global-task">3.2. Top-level algorithms</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-concept-relevant-global">
    <a href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global">https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-concept-relevant-global">4.3. Extensions to the existing algorithms</a>
+    <li><a href="#ref-for-concept-relevant-global">3.2. Top-level algorithms</a>
+    <li><a href="#ref-for-concept-relevant-global①">4.2. Extensions to the existing algorithms</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-relevant-settings-object">
    <a href="https://html.spec.whatwg.org/multipage/webappapis.html#relevant-settings-object">https://html.spec.whatwg.org/multipage/webappapis.html#relevant-settings-object</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-relevant-settings-object">4.3. Extensions to the existing algorithms</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-responsible-document">
-   <a href="https://html.spec.whatwg.org/multipage/webappapis.html#responsible-document">https://html.spec.whatwg.org/multipage/webappapis.html#responsible-document</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-responsible-document">3.1. Top-level algorithms</a>
+    <li><a href="#ref-for-relevant-settings-object">4.2. Extensions to the existing algorithms</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-concept-realm-settings-object">
    <a href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-settings-object">https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-settings-object</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-concept-realm-settings-object">3.1. Top-level algorithms</a>
-    <li><a href="#ref-for-concept-realm-settings-object①">3.2. Converting an intermediate memory measurement to the result</a>
+    <li><a href="#ref-for-concept-realm-settings-object">3.2. Top-level algorithms</a>
+    <li><a href="#ref-for-concept-realm-settings-object①">3.3. Converting an intermediate memory measurement to the result</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-iframe-src">
-   <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#dom-iframe-src">https://html.spec.whatwg.org/multipage/iframe-embed-object.html#dom-iframe-src</a><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="term-for-attr-iframe-src">
+   <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-src">https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-src</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-iframe-src">3.3. Creating or obtaining a memory attribution token</a>
+    <li><a href="#ref-for-attr-iframe-src">3.4. Creating or obtaining a memory attribution token</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-concept-environment-top-level-origin">
    <a href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-environment-top-level-origin">https://html.spec.whatwg.org/multipage/webappapis.html#concept-environment-top-level-origin</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-concept-environment-top-level-origin">3.1. Top-level algorithms</a>
+    <li><a href="#ref-for-concept-environment-top-level-origin">3.2. Top-level algorithms</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-list-append">
    <a href="https://infra.spec.whatwg.org/#list-append">https://infra.spec.whatwg.org/#list-append</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-list-append">3.2. Converting an intermediate memory measurement to the result</a> <a href="#ref-for-list-append①">(2)</a>
+    <li><a href="#ref-for-list-append">3.3. Converting an intermediate memory measurement to the result</a> <a href="#ref-for-list-append①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-assert">
    <a href="https://infra.spec.whatwg.org/#assert">https://infra.spec.whatwg.org/#assert</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-assert">3.1. Top-level algorithms</a>
-    <li><a href="#ref-for-assert①">3.3. Creating or obtaining a memory attribution token</a> <a href="#ref-for-assert②">(2)</a> <a href="#ref-for-assert③">(3)</a>
+    <li><a href="#ref-for-assert">3.2. Top-level algorithms</a>
+    <li><a href="#ref-for-assert①">3.4. Creating or obtaining a memory attribution token</a> <a href="#ref-for-assert②">(2)</a> <a href="#ref-for-assert③">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-boolean">
@@ -2787,13 +2763,19 @@ the <a data-link-type="dfn" href="#windoworworkerglobalscope-memory-attribution-
   <aside class="dfn-panel" data-for="term-for-list-iterate">
    <a href="https://infra.spec.whatwg.org/#list-iterate">https://infra.spec.whatwg.org/#list-iterate</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-list-iterate">3.2. Converting an intermediate memory measurement to the result</a> <a href="#ref-for-list-iterate①">(2)</a> <a href="#ref-for-list-iterate②">(3)</a>
+    <li><a href="#ref-for-list-iterate">3.3. Converting an intermediate memory measurement to the result</a> <a href="#ref-for-list-iterate①">(2)</a> <a href="#ref-for-list-iterate②">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-map-getting-the-values">
    <a href="https://infra.spec.whatwg.org/#map-getting-the-values">https://infra.spec.whatwg.org/#map-getting-the-values</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-map-getting-the-values">3.1. Top-level algorithms</a>
+    <li><a href="#ref-for-map-getting-the-values">3.2. Top-level algorithms</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-implementation-defined">
+   <a href="https://infra.spec.whatwg.org/#implementation-defined">https://infra.spec.whatwg.org/#implementation-defined</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-implementation-defined">3.2. Top-level algorithms</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-struct-item">
@@ -2806,14 +2788,14 @@ the <a data-link-type="dfn" href="#windoworworkerglobalscope-memory-attribution-
   <aside class="dfn-panel" data-for="term-for-list">
    <a href="https://infra.spec.whatwg.org/#list">https://infra.spec.whatwg.org/#list</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-list">3.2. Converting an intermediate memory measurement to the result</a> <a href="#ref-for-list①">(2)</a>
+    <li><a href="#ref-for-list">3.3. Converting an intermediate memory measurement to the result</a> <a href="#ref-for-list①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-ordered-set">
    <a href="https://infra.spec.whatwg.org/#ordered-set">https://infra.spec.whatwg.org/#ordered-set</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-ordered-set">2.2. Intermediate memory measurement</a> <a href="#ref-for-ordered-set①">(2)</a> <a href="#ref-for-ordered-set②">(3)</a>
-    <li><a href="#ref-for-ordered-set③">3.1. Top-level algorithms</a> <a href="#ref-for-ordered-set④">(2)</a>
+    <li><a href="#ref-for-ordered-set③">3.2. Top-level algorithms</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-string">
@@ -2832,26 +2814,20 @@ the <a data-link-type="dfn" href="#windoworworkerglobalscope-memory-attribution-
   <aside class="dfn-panel" data-for="term-for-serviceworkerglobalscope">
    <a href="https://w3c.github.io/ServiceWorker/#serviceworkerglobalscope">https://w3c.github.io/ServiceWorker/#serviceworkerglobalscope</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-serviceworkerglobalscope">3.1. Top-level algorithms</a>
-    <li><a href="#ref-for-serviceworkerglobalscope①">3.3. Creating or obtaining a memory attribution token</a> <a href="#ref-for-serviceworkerglobalscope②">(2)</a>
+    <li><a href="#ref-for-serviceworkerglobalscope">3.2. Top-level algorithms</a>
+    <li><a href="#ref-for-serviceworkerglobalscope①">3.4. Creating or obtaining a memory attribution token</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-idl-DOMException">
    <a href="https://heycam.github.io/webidl/#idl-DOMException">https://heycam.github.io/webidl/#idl-DOMException</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-idl-DOMException">3.1. Top-level algorithms</a>
+    <li><a href="#ref-for-idl-DOMException">3.2. Top-level algorithms</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-idl-DOMString">
    <a href="https://heycam.github.io/webidl/#idl-DOMString">https://heycam.github.io/webidl/#idl-DOMString</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-idl-DOMString">2.1. Memory measurement result</a> <a href="#ref-for-idl-DOMString①">(2)</a> <a href="#ref-for-idl-DOMString②">(3)</a> <a href="#ref-for-idl-DOMString③">(4)</a> <a href="#ref-for-idl-DOMString④">(5)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-Exposed">
-   <a href="https://heycam.github.io/webidl/#Exposed">https://heycam.github.io/webidl/#Exposed</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-Exposed">4.1. Extensions to the Performance interface</a>
+    <li><a href="#ref-for-idl-DOMString">2.1. Memory measurement result</a> <a href="#ref-for-idl-DOMString①">(2)</a> <a href="#ref-for-idl-DOMString②">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-idl-promise">
@@ -2859,7 +2835,43 @@ the <a data-link-type="dfn" href="#windoworworkerglobalscope-memory-attribution-
    <ul>
     <li><a href="#ref-for-idl-promise">1.1. Examples</a>
     <li><a href="#ref-for-idl-promise①">2.1. Memory measurement result</a>
-    <li><a href="#ref-for-idl-promise②">3.1. Top-level algorithms</a> <a href="#ref-for-idl-promise③">(2)</a>
+    <li><a href="#ref-for-idl-promise②">3.2. Top-level algorithms</a> <a href="#ref-for-idl-promise③">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-securityerror">
+   <a href="https://heycam.github.io/webidl/#securityerror">https://heycam.github.io/webidl/#securityerror</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-securityerror">3.2. Top-level algorithms</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-idl-USVString">
+   <a href="https://heycam.github.io/webidl/#idl-USVString">https://heycam.github.io/webidl/#idl-USVString</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-idl-USVString">2.1. Memory measurement result</a> <a href="#ref-for-idl-USVString①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-a-promise-rejected-with">
+   <a href="https://heycam.github.io/webidl/#a-promise-rejected-with">https://heycam.github.io/webidl/#a-promise-rejected-with</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-a-promise-rejected-with">3.2. Top-level algorithms</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dfn-identifier">
+   <a href="https://heycam.github.io/webidl/#dfn-identifier">https://heycam.github.io/webidl/#dfn-identifier</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dfn-identifier">3.3. Converting an intermediate memory measurement to the result</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dfn-interface">
+   <a href="https://heycam.github.io/webidl/#dfn-interface">https://heycam.github.io/webidl/#dfn-interface</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dfn-interface">3.3. Converting an intermediate memory measurement to the result</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-resolve">
+   <a href="https://heycam.github.io/webidl/#resolve">https://heycam.github.io/webidl/#resolve</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-resolve">3.2. Top-level algorithms</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-idl-unsigned-long-long">
@@ -2873,15 +2885,17 @@ the <a data-link-type="dfn" href="#windoworworkerglobalscope-memory-attribution-
    <li>
     <a data-link-type="biblio">[DOM]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-dom-element-id" style="color:initial">id</span>
-     <li><span class="dfn-paneled" id="term-for-dom-element-tagname" style="color:initial">tagName</span>
+     <li><span class="dfn-paneled" id="term-for-concept-element-local-name" style="color:initial">local name</span>
     </ul>
    <li>
     <a data-link-type="biblio">[ECMASCRIPT]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-sec-agent-clusters" style="color:initial">JavaScript agent clusters</span>
-     <li><span class="dfn-paneled" id="term-for-sec-code-realms" style="color:initial">JavaScript realm</span>
-     <li><span class="dfn-paneled" id="term-for-sec-code-realms①" style="color:initial">JavaScript realms</span>
+     <li><span class="dfn-paneled" id="term-for-sec-agents" style="color:initial">agent</span>
+     <li><span class="dfn-paneled" id="term-for-sec-agent-clusters" style="color:initial">agent cluster <small>(for agent)</small></span>
+     <li><span class="dfn-paneled" id="term-for-sec-agent" style="color:initial">current realm</span>
+     <li><span class="dfn-paneled" id="term-for-sec-agent-clusters①" style="color:initial">javascript agent clusters</span>
+     <li><span class="dfn-paneled" id="term-for-sec-code-realms" style="color:initial">javascript realm</span>
+     <li><span class="dfn-paneled" id="term-for-sec-code-realms①" style="color:initial">javascript realms</span>
     </ul>
    <li>
     <a data-link-type="biblio">[hr-time-2]</a> defines the following terms:
@@ -2893,26 +2907,24 @@ the <a data-link-type="dfn" href="#windoworworkerglobalscope-memory-attribution-
     <ul>
      <li><span class="dfn-paneled" id="term-for-dedicatedworkerglobalscope" style="color:initial">DedicatedWorkerGlobalScope</span>
      <li><span class="dfn-paneled" id="term-for-htmlelement" style="color:initial">HTMLElement</span>
-     <li><span class="dfn-paneled" id="term-for-htmlobjectelement" style="color:initial">HTMLObjectElement</span>
      <li><span class="dfn-paneled" id="term-for-sharedworkerglobalscope" style="color:initial">SharedWorkerGlobalScope</span>
      <li><span class="dfn-paneled" id="term-for-window" style="color:initial">Window</span>
      <li><span class="dfn-paneled" id="term-for-windoworworkerglobalscope" style="color:initial">WindowOrWorkerGlobalScope</span>
      <li><span class="dfn-paneled" id="term-for-workerglobalscope" style="color:initial">WorkerGlobalScope</span>
-     <li><span class="dfn-paneled" id="term-for-concept-document-bc" style="color:initial">browsing context</span>
+     <li><span class="dfn-paneled" id="term-for-window-bc" style="color:initial">browsing context</span>
      <li><span class="dfn-paneled" id="term-for-browsing-context-group" style="color:initial">browsing context group</span>
      <li><span class="dfn-paneled" id="term-for-concept-environment-creation-url" style="color:initial">creation url</span>
-     <li><span class="dfn-paneled" id="term-for-current-global-object" style="color:initial">current global object</span>
-     <li><span class="dfn-paneled" id="term-for-current-settings-object" style="color:initial">current settings object</span>
-     <li><span class="dfn-paneled" id="term-for-dom-object-data" style="color:initial">data</span>
+     <li><span class="dfn-paneled" id="term-for-attr-object-data" style="color:initial">data</span>
      <li><span class="dfn-paneled" id="term-for-environment-settings-object" style="color:initial">environment settings object</span>
      <li><span class="dfn-paneled" id="term-for-concept-settings-object-global" style="color:initial">global object <small>(for environment settings object)</small></span>
+     <li><span class="dfn-paneled" id="term-for-in-parallel" style="color:initial">in parallel</span>
+     <li><span class="dfn-paneled" id="term-for-the-object-element" style="color:initial">object</span>
      <li><span class="dfn-paneled" id="term-for-concept-settings-object-origin" style="color:initial">origin <small>(for environment settings object)</small></span>
-     <li><span class="dfn-paneled" id="term-for-environment-settings-object&apos;s-realm" style="color:initial">realm</span>
+     <li><span class="dfn-paneled" id="term-for-queue-a-global-task" style="color:initial">queue a global task</span>
      <li><span class="dfn-paneled" id="term-for-concept-relevant-global" style="color:initial">relevant global object</span>
      <li><span class="dfn-paneled" id="term-for-relevant-settings-object" style="color:initial">relevant settings object</span>
-     <li><span class="dfn-paneled" id="term-for-responsible-document" style="color:initial">responsible document</span>
      <li><span class="dfn-paneled" id="term-for-concept-realm-settings-object" style="color:initial">settings object</span>
-     <li><span class="dfn-paneled" id="term-for-dom-iframe-src" style="color:initial">src <small>(for HTMLIFrameElement)</small></span>
+     <li><span class="dfn-paneled" id="term-for-attr-iframe-src" style="color:initial">src</span>
      <li><span class="dfn-paneled" id="term-for-concept-environment-top-level-origin" style="color:initial">top-level origin</span>
     </ul>
    <li>
@@ -2923,6 +2935,7 @@ the <a data-link-type="dfn" href="#windoworworkerglobalscope-memory-attribution-
      <li><span class="dfn-paneled" id="term-for-boolean" style="color:initial">boolean</span>
      <li><span class="dfn-paneled" id="term-for-list-iterate" style="color:initial">for each</span>
      <li><span class="dfn-paneled" id="term-for-map-getting-the-values" style="color:initial">getting the values</span>
+     <li><span class="dfn-paneled" id="term-for-implementation-defined" style="color:initial">implementation-defined</span>
      <li><span class="dfn-paneled" id="term-for-struct-item" style="color:initial">item</span>
      <li><span class="dfn-paneled" id="term-for-list" style="color:initial">list</span>
      <li><span class="dfn-paneled" id="term-for-ordered-set" style="color:initial">set</span>
@@ -2939,8 +2952,13 @@ the <a data-link-type="dfn" href="#windoworworkerglobalscope-memory-attribution-
     <ul>
      <li><span class="dfn-paneled" id="term-for-idl-DOMException" style="color:initial">DOMException</span>
      <li><span class="dfn-paneled" id="term-for-idl-DOMString" style="color:initial">DOMString</span>
-     <li><span class="dfn-paneled" id="term-for-Exposed" style="color:initial">Exposed</span>
      <li><span class="dfn-paneled" id="term-for-idl-promise" style="color:initial">Promise</span>
+     <li><span class="dfn-paneled" id="term-for-securityerror" style="color:initial">SecurityError</span>
+     <li><span class="dfn-paneled" id="term-for-idl-USVString" style="color:initial">USVString</span>
+     <li><span class="dfn-paneled" id="term-for-a-promise-rejected-with" style="color:initial">a promise rejected with</span>
+     <li><span class="dfn-paneled" id="term-for-dfn-identifier" style="color:initial">identifier</span>
+     <li><span class="dfn-paneled" id="term-for-dfn-interface" style="color:initial">interface</span>
+     <li><span class="dfn-paneled" id="term-for-resolve" style="color:initial">resolve</span>
      <li><span class="dfn-paneled" id="term-for-idl-unsigned-long-long" style="color:initial">unsigned long long</span>
     </ul>
   </ul>
@@ -2964,109 +2982,109 @@ the <a data-link-type="dfn" href="#windoworworkerglobalscope-memory-attribution-
   </dl>
   <h2 class="no-num no-ref heading settled" id="idl-index"><span class="content">IDL Index</span><a class="self-link" href="#idl-index"></a></h2>
 <pre class="idl highlight def"><c- b>dictionary</c-> <a href="#dictdef-memorymeasurement"><code><c- g>MemoryMeasurement</c-></code></a> {
-  <c- b>required</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-unsigned-long-long"><c- b>unsigned</c-> <c- b>long</c-> <c- b>long</c-></a> <a data-type="unsigned long long " href="#dom-memorymeasurement-bytes"><code><c- g>bytes</c-></code></a>;
-  <c- b>required</c-> <c- b>sequence</c->&lt;<a class="n" data-link-type="idl-name" href="#dictdef-memorybreakdownentry"><c- n>MemoryBreakdownEntry</c-></a>> <a data-type="sequence<MemoryBreakdownEntry> " href="#dom-memorymeasurement-breakdown"><code><c- g>breakdown</c-></code></a>;
+  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-unsigned-long-long"><c- b>unsigned</c-> <c- b>long</c-> <c- b>long</c-></a> <a data-type="unsigned long long " href="#dom-memorymeasurement-bytes"><code><c- g>bytes</c-></code></a>;
+  <c- b>sequence</c->&lt;<a class="n" data-link-type="idl-name" href="#dictdef-memorybreakdownentry"><c- n>MemoryBreakdownEntry</c-></a>> <a data-type="sequence<MemoryBreakdownEntry> " href="#dom-memorymeasurement-breakdown"><code><c- g>breakdown</c-></code></a>;
 };
 
 <c- b>dictionary</c-> <a href="#dictdef-memorybreakdownentry"><code><c- g>MemoryBreakdownEntry</c-></code></a> {
-  <c- b>required</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-unsigned-long-long"><c- b>unsigned</c-> <c- b>long</c-> <c- b>long</c-></a> <a data-type="unsigned long long " href="#dom-memorybreakdownentry-bytes"><code><c- g>bytes</c-></code></a>;
-  <c- b>required</c-> <c- b>sequence</c->&lt;<a class="n" data-link-type="idl-name" href="#dictdef-memoryattribution"><c- n>MemoryAttribution</c-></a>> <a data-type="sequence<MemoryAttribution> " href="#dom-memorybreakdownentry-attribution"><code><c- g>attribution</c-></code></a>;
-  <c- b>required</c-> <c- b>sequence</c->&lt;<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString"><c- b>DOMString</c-></a>> <a data-type="sequence<DOMString> " href="#dom-memorybreakdownentry-useragentspecifictypes"><code><c- g>userAgentSpecificTypes</c-></code></a>;
+  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-unsigned-long-long"><c- b>unsigned</c-> <c- b>long</c-> <c- b>long</c-></a> <a data-type="unsigned long long " href="#dom-memorybreakdownentry-bytes"><code><c- g>bytes</c-></code></a>;
+  <c- b>sequence</c->&lt;<a class="n" data-link-type="idl-name" href="#dictdef-memoryattribution"><c- n>MemoryAttribution</c-></a>> <a data-type="sequence<MemoryAttribution> " href="#dom-memorybreakdownentry-attribution"><code><c- g>attribution</c-></code></a>;
+  <c- b>sequence</c->&lt;<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString"><c- b>DOMString</c-></a>> <a data-type="sequence<DOMString> " href="#dom-memorybreakdownentry-useragentspecifictypes"><code><c- g>userAgentSpecificTypes</c-></code></a>;
 };
 
 <c- b>dictionary</c-> <a href="#dictdef-memoryattribution"><code><c- g>MemoryAttribution</c-></code></a> {
-  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString"><c- b>DOMString</c-></a> <a data-type="DOMString " href="#dom-memoryattribution-url"><code><c- g>url</c-></code></a>;
+  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-USVString"><c- b>USVString</c-></a> <a data-type="USVString " href="#dom-memoryattribution-url"><code><c- g>url</c-></code></a>;
   <a class="n" data-link-type="idl-name" href="#dictdef-memoryattributioncontainer"><c- n>MemoryAttributionContainer</c-></a> <a data-type="MemoryAttributionContainer " href="#dom-memoryattribution-container"><code><c- g>container</c-></code></a>;
-  <c- b>required</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString"><c- b>DOMString</c-></a> <a data-type="DOMString " href="#dom-memoryattribution-scope"><code><c- g>scope</c-></code></a>;
+  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString"><c- b>DOMString</c-></a> <a data-type="DOMString " href="#dom-memoryattribution-scope"><code><c- g>scope</c-></code></a>;
 };
 
 <c- b>dictionary</c-> <a href="#dictdef-memoryattributioncontainer"><code><c- g>MemoryAttributionContainer</c-></code></a> {
   <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString"><c- b>DOMString</c-></a> <a data-type="DOMString " href="#dom-memoryattributioncontainer-id"><code><c- g>id</c-></code></a>;
-  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString"><c- b>DOMString</c-></a> <a data-type="DOMString " href="#dom-memoryattributioncontainer-src"><code><c- g>src</c-></code></a>;
+  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-USVString"><c- b>USVString</c-></a> <a data-type="USVString " href="#dom-memoryattributioncontainer-src"><code><c- g>src</c-></code></a>;
 };
 
-[<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
-<c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://www.w3.org/TR/hr-time-2#sec-performance"><c- g>Performance</c-></a> {
-  <c- b>Promise</c->&lt;<a class="n" data-link-type="idl-name" href="#dictdef-memorymeasurement"><c- n>MemoryMeasurement</c-></a>> <a href="#dom-performance-measurememory"><code><c- g>measureMemory</c-></code></a>();
+<c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://w3c.github.io/hr-time/#sec-performance"><c- g>Performance</c-></a> {
+  <c- b>Promise</c->&lt;<a class="n" data-link-type="idl-name" href="#dictdef-memorymeasurement"><c- n>MemoryMeasurement</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-performance-measurememory"><c- g>measureMemory</c-></a>();
 };
 
 </pre>
   <aside class="dfn-panel" data-for="dictdef-memorymeasurement">
    <b><a href="#dictdef-memorymeasurement">#dictdef-memorymeasurement</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dictdef-memorymeasurement">2.2. Intermediate memory measurement</a>
-    <li><a href="#ref-for-dictdef-memorymeasurement①">3.2. Converting an intermediate memory measurement to the result</a>
-    <li><a href="#ref-for-dictdef-memorymeasurement②">4.1. Extensions to the Performance interface</a>
+    <li><a href="#ref-for-dictdef-memorymeasurement">2.1. Memory measurement result</a>
+    <li><a href="#ref-for-dictdef-memorymeasurement①">2.2. Intermediate memory measurement</a>
+    <li><a href="#ref-for-dictdef-memorymeasurement②">3.1. Extensions to the Performance interface</a>
+    <li><a href="#ref-for-dictdef-memorymeasurement③">3.3. Converting an intermediate memory measurement to the result</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-memorymeasurement-bytes">
    <b><a href="#dom-memorymeasurement-bytes">#dom-memorymeasurement-bytes</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-memorymeasurement-bytes">2.1. Memory measurement result</a> <a href="#ref-for-dom-memorymeasurement-bytes①">(2)</a>
-    <li><a href="#ref-for-dom-memorymeasurement-bytes②">3.2. Converting an intermediate memory measurement to the result</a>
+    <li><a href="#ref-for-dom-memorymeasurement-bytes②">3.3. Converting an intermediate memory measurement to the result</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-memorymeasurement-breakdown">
    <b><a href="#dom-memorymeasurement-breakdown">#dom-memorymeasurement-breakdown</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-memorymeasurement-breakdown">2.1. Memory measurement result</a>
-    <li><a href="#ref-for-dom-memorymeasurement-breakdown①">3.2. Converting an intermediate memory measurement to the result</a>
+    <li><a href="#ref-for-dom-memorymeasurement-breakdown①">3.3. Converting an intermediate memory measurement to the result</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dictdef-memorybreakdownentry">
    <b><a href="#dictdef-memorybreakdownentry">#dictdef-memorybreakdownentry</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dictdef-memorybreakdownentry">2.1. Memory measurement result</a>
-    <li><a href="#ref-for-dictdef-memorybreakdownentry①">3.2. Converting an intermediate memory measurement to the result</a>
+    <li><a href="#ref-for-dictdef-memorybreakdownentry①">3.3. Converting an intermediate memory measurement to the result</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-memorybreakdownentry-bytes">
    <b><a href="#dom-memorybreakdownentry-bytes">#dom-memorybreakdownentry-bytes</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-memorybreakdownentry-bytes">2.1. Memory measurement result</a>
-    <li><a href="#ref-for-dom-memorybreakdownentry-bytes①">3.2. Converting an intermediate memory measurement to the result</a>
+    <li><a href="#ref-for-dom-memorybreakdownentry-bytes①">3.3. Converting an intermediate memory measurement to the result</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-memorybreakdownentry-attribution">
    <b><a href="#dom-memorybreakdownentry-attribution">#dom-memorybreakdownentry-attribution</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-memorybreakdownentry-attribution">2.1. Memory measurement result</a>
-    <li><a href="#ref-for-dom-memorybreakdownentry-attribution①">3.2. Converting an intermediate memory measurement to the result</a>
+    <li><a href="#ref-for-dom-memorybreakdownentry-attribution①">3.3. Converting an intermediate memory measurement to the result</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-memorybreakdownentry-useragentspecifictypes">
    <b><a href="#dom-memorybreakdownentry-useragentspecifictypes">#dom-memorybreakdownentry-useragentspecifictypes</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-memorybreakdownentry-useragentspecifictypes">2.1. Memory measurement result</a>
-    <li><a href="#ref-for-dom-memorybreakdownentry-useragentspecifictypes①">3.2. Converting an intermediate memory measurement to the result</a>
+    <li><a href="#ref-for-dom-memorybreakdownentry-useragentspecifictypes①">3.3. Converting an intermediate memory measurement to the result</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dictdef-memoryattribution">
    <b><a href="#dictdef-memoryattribution">#dictdef-memoryattribution</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dictdef-memoryattribution">2.1. Memory measurement result</a>
-    <li><a href="#ref-for-dictdef-memoryattribution①">3.2. Converting an intermediate memory measurement to the result</a> <a href="#ref-for-dictdef-memoryattribution②">(2)</a>
+    <li><a href="#ref-for-dictdef-memoryattribution①">3.3. Converting an intermediate memory measurement to the result</a> <a href="#ref-for-dictdef-memoryattribution②">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-memoryattribution-url">
    <b><a href="#dom-memoryattribution-url">#dom-memoryattribution-url</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-memoryattribution-url">2.1. Memory measurement result</a>
-    <li><a href="#ref-for-dom-memoryattribution-url①">3.2. Converting an intermediate memory measurement to the result</a> <a href="#ref-for-dom-memoryattribution-url②">(2)</a>
+    <li><a href="#ref-for-dom-memoryattribution-url①">3.3. Converting an intermediate memory measurement to the result</a> <a href="#ref-for-dom-memoryattribution-url②">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-memoryattribution-container">
    <b><a href="#dom-memoryattribution-container">#dom-memoryattribution-container</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-memoryattribution-container">2.1. Memory measurement result</a>
-    <li><a href="#ref-for-dom-memoryattribution-container①">3.2. Converting an intermediate memory measurement to the result</a> <a href="#ref-for-dom-memoryattribution-container②">(2)</a>
+    <li><a href="#ref-for-dom-memoryattribution-container①">3.3. Converting an intermediate memory measurement to the result</a> <a href="#ref-for-dom-memoryattribution-container②">(2)</a> <a href="#ref-for-dom-memoryattribution-container③">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-memoryattribution-scope">
    <b><a href="#dom-memoryattribution-scope">#dom-memoryattribution-scope</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-memoryattribution-scope">2.1. Memory measurement result</a>
-    <li><a href="#ref-for-dom-memoryattribution-scope①">3.2. Converting an intermediate memory measurement to the result</a> <a href="#ref-for-dom-memoryattribution-scope②">(2)</a>
+    <li><a href="#ref-for-dom-memoryattribution-scope①">3.3. Converting an intermediate memory measurement to the result</a> <a href="#ref-for-dom-memoryattribution-scope②">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dictdef-memoryattributioncontainer">
@@ -3074,155 +3092,147 @@ the <a data-link-type="dfn" href="#windoworworkerglobalscope-memory-attribution-
    <ul>
     <li><a href="#ref-for-dictdef-memoryattributioncontainer">2.1. Memory measurement result</a>
     <li><a href="#ref-for-dictdef-memoryattributioncontainer①">2.3. Memory attribution token</a>
-    <li><a href="#ref-for-dictdef-memoryattributioncontainer②">3.3. Creating or obtaining a memory attribution token</a> <a href="#ref-for-dictdef-memoryattributioncontainer③">(2)</a> <a href="#ref-for-dictdef-memoryattributioncontainer④">(3)</a>
+    <li><a href="#ref-for-dictdef-memoryattributioncontainer②">3.4. Creating or obtaining a memory attribution token</a> <a href="#ref-for-dictdef-memoryattributioncontainer③">(2)</a> <a href="#ref-for-dictdef-memoryattributioncontainer④">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-memoryattributioncontainer-id">
    <b><a href="#dom-memoryattributioncontainer-id">#dom-memoryattributioncontainer-id</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-memoryattributioncontainer-id">2.1. Memory measurement result</a>
-    <li><a href="#ref-for-dom-memoryattributioncontainer-id①">3.3. Creating or obtaining a memory attribution token</a> <a href="#ref-for-dom-memoryattributioncontainer-id②">(2)</a> <a href="#ref-for-dom-memoryattributioncontainer-id③">(3)</a>
+    <li><a href="#ref-for-dom-memoryattributioncontainer-id①">3.4. Creating or obtaining a memory attribution token</a> <a href="#ref-for-dom-memoryattributioncontainer-id②">(2)</a> <a href="#ref-for-dom-memoryattributioncontainer-id③">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-memoryattributioncontainer-src">
    <b><a href="#dom-memoryattributioncontainer-src">#dom-memoryattributioncontainer-src</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-memoryattributioncontainer-src">2.1. Memory measurement result</a>
-    <li><a href="#ref-for-dom-memoryattributioncontainer-src①">3.3. Creating or obtaining a memory attribution token</a> <a href="#ref-for-dom-memoryattributioncontainer-src②">(2)</a> <a href="#ref-for-dom-memoryattributioncontainer-src③">(3)</a>
+    <li><a href="#ref-for-dom-memoryattributioncontainer-src①">3.4. Creating or obtaining a memory attribution token</a> <a href="#ref-for-dom-memoryattributioncontainer-src②">(2)</a> <a href="#ref-for-dom-memoryattributioncontainer-src③">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="intermediate-memory-measurement">
    <b><a href="#intermediate-memory-measurement">#intermediate-memory-measurement</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-intermediate-memory-measurement">2.2. Intermediate memory measurement</a>
-    <li><a href="#ref-for-intermediate-memory-measurement①">3.2. Converting an intermediate memory measurement to the result</a>
+    <li><a href="#ref-for-intermediate-memory-measurement①">3.2. Top-level algorithms</a>
+    <li><a href="#ref-for-intermediate-memory-measurement②">3.3. Converting an intermediate memory measurement to the result</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="intermediate-memory-breakdown-entry">
    <b><a href="#intermediate-memory-breakdown-entry">#intermediate-memory-breakdown-entry</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-intermediate-memory-breakdown-entry">2.2. Intermediate memory measurement</a> <a href="#ref-for-intermediate-memory-breakdown-entry①">(2)</a>
-    <li><a href="#ref-for-intermediate-memory-breakdown-entry②">3.2. Converting an intermediate memory measurement to the result</a> <a href="#ref-for-intermediate-memory-breakdown-entry③">(2)</a> <a href="#ref-for-intermediate-memory-breakdown-entry④">(3)</a>
+    <li><a href="#ref-for-intermediate-memory-breakdown-entry②">3.3. Converting an intermediate memory measurement to the result</a> <a href="#ref-for-intermediate-memory-breakdown-entry③">(2)</a> <a href="#ref-for-intermediate-memory-breakdown-entry④">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="intermediate-memory-breakdown-entry-bytes">
    <b><a href="#intermediate-memory-breakdown-entry-bytes">#intermediate-memory-breakdown-entry-bytes</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-intermediate-memory-breakdown-entry-bytes">3.2. Converting an intermediate memory measurement to the result</a> <a href="#ref-for-intermediate-memory-breakdown-entry-bytes①">(2)</a>
+    <li><a href="#ref-for-intermediate-memory-breakdown-entry-bytes">3.3. Converting an intermediate memory measurement to the result</a> <a href="#ref-for-intermediate-memory-breakdown-entry-bytes①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="intermediate-memory-breakdown-entry-realms">
    <b><a href="#intermediate-memory-breakdown-entry-realms">#intermediate-memory-breakdown-entry-realms</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-intermediate-memory-breakdown-entry-realms">3.2. Converting an intermediate memory measurement to the result</a>
+    <li><a href="#ref-for-intermediate-memory-breakdown-entry-realms">3.3. Converting an intermediate memory measurement to the result</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="intermediate-memory-breakdown-entry-user-agent-specific-types">
    <b><a href="#intermediate-memory-breakdown-entry-user-agent-specific-types">#intermediate-memory-breakdown-entry-user-agent-specific-types</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-intermediate-memory-breakdown-entry-user-agent-specific-types">3.2. Converting an intermediate memory measurement to the result</a>
+    <li><a href="#ref-for-intermediate-memory-breakdown-entry-user-agent-specific-types">3.3. Converting an intermediate memory measurement to the result</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="memory-attribution-token">
    <b><a href="#memory-attribution-token">#memory-attribution-token</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-memory-attribution-token">3.3. Creating or obtaining a memory attribution token</a> <a href="#ref-for-memory-attribution-token①">(2)</a> <a href="#ref-for-memory-attribution-token②">(3)</a> <a href="#ref-for-memory-attribution-token③">(4)</a> <a href="#ref-for-memory-attribution-token④">(5)</a>
-    <li><a href="#ref-for-memory-attribution-token⑤">4.2. Extension to WindowOrWorkerGlobalScope</a>
-    <li><a href="#ref-for-memory-attribution-token⑥">4.3. Extensions to the existing algorithms</a>
+    <li><a href="#ref-for-memory-attribution-token">3.4. Creating or obtaining a memory attribution token</a> <a href="#ref-for-memory-attribution-token①">(2)</a> <a href="#ref-for-memory-attribution-token②">(3)</a> <a href="#ref-for-memory-attribution-token③">(4)</a> <a href="#ref-for-memory-attribution-token④">(5)</a>
+    <li><a href="#ref-for-memory-attribution-token⑤">4.1. Extension to WindowOrWorkerGlobalScope</a>
+    <li><a href="#ref-for-memory-attribution-token⑥">4.2. Extensions to the existing algorithms</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="memory-attribution-token-container">
    <b><a href="#memory-attribution-token-container">#memory-attribution-token-container</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-memory-attribution-token-container">3.2. Converting an intermediate memory measurement to the result</a> <a href="#ref-for-memory-attribution-token-container①">(2)</a>
-    <li><a href="#ref-for-memory-attribution-token-container②">3.3. Creating or obtaining a memory attribution token</a> <a href="#ref-for-memory-attribution-token-container③">(2)</a> <a href="#ref-for-memory-attribution-token-container④">(3)</a> <a href="#ref-for-memory-attribution-token-container⑤">(4)</a>
+    <li><a href="#ref-for-memory-attribution-token-container">3.3. Converting an intermediate memory measurement to the result</a> <a href="#ref-for-memory-attribution-token-container①">(2)</a>
+    <li><a href="#ref-for-memory-attribution-token-container②">3.4. Creating or obtaining a memory attribution token</a> <a href="#ref-for-memory-attribution-token-container③">(2)</a> <a href="#ref-for-memory-attribution-token-container④">(3)</a> <a href="#ref-for-memory-attribution-token-container⑤">(4)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="memory-attribution-token-cross-origin-aggregated-flag">
    <b><a href="#memory-attribution-token-cross-origin-aggregated-flag">#memory-attribution-token-cross-origin-aggregated-flag</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-memory-attribution-token-cross-origin-aggregated-flag">3.2. Converting an intermediate memory measurement to the result</a>
-    <li><a href="#ref-for-memory-attribution-token-cross-origin-aggregated-flag①">3.3. Creating or obtaining a memory attribution token</a> <a href="#ref-for-memory-attribution-token-cross-origin-aggregated-flag②">(2)</a> <a href="#ref-for-memory-attribution-token-cross-origin-aggregated-flag③">(3)</a> <a href="#ref-for-memory-attribution-token-cross-origin-aggregated-flag④">(4)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="performancemeasurememory">
-   <b><a href="#performancemeasurememory">#performancemeasurememory</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-performancemeasurememory">1. Introduction</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="memory-measurement-allowed-predicate">
-   <b><a href="#memory-measurement-allowed-predicate">#memory-measurement-allowed-predicate</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-memory-measurement-allowed-predicate">3.1. Top-level algorithms</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="getting-all-agent-clusters">
-   <b><a href="#getting-all-agent-clusters">#getting-all-agent-clusters</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-getting-all-agent-clusters">3.1. Top-level algorithms</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="implementation-defined-memory-measurement">
-   <b><a href="#implementation-defined-memory-measurement">#implementation-defined-memory-measurement</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-implementation-defined-memory-measurement">3.1. Top-level algorithms</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="creating-a-new-memory-measurement">
-   <b><a href="#creating-a-new-memory-measurement">#creating-a-new-memory-measurement</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-creating-a-new-memory-measurement">3.1. Top-level algorithms</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="creating-a-new-memory-breakdown-entry">
-   <b><a href="#creating-a-new-memory-breakdown-entry">#creating-a-new-memory-breakdown-entry</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-creating-a-new-memory-breakdown-entry">3.2. Converting an intermediate memory measurement to the result</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="creating-a-new-memory-attribution">
-   <b><a href="#creating-a-new-memory-attribution">#creating-a-new-memory-attribution</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-creating-a-new-memory-attribution">3.2. Converting an intermediate memory measurement to the result</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="obtain-window-memory-attribution-token">
-   <b><a href="#obtain-window-memory-attribution-token">#obtain-window-memory-attribution-token</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-obtain-window-memory-attribution-token">4.3. Extensions to the existing algorithms</a> <a href="#ref-for-obtain-window-memory-attribution-token①">(2)</a> <a href="#ref-for-obtain-window-memory-attribution-token②">(3)</a> <a href="#ref-for-obtain-window-memory-attribution-token③">(4)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="obtain-worker-memory-attribution-token">
-   <b><a href="#obtain-worker-memory-attribution-token">#obtain-worker-memory-attribution-token</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-obtain-worker-memory-attribution-token">4.3. Extensions to the existing algorithms</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="extract-container-element-attributes">
-   <b><a href="#extract-container-element-attributes">#extract-container-element-attributes</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-extract-container-element-attributes">3.3. Creating or obtaining a memory attribution token</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="get-the-global-scope-name">
-   <b><a href="#get-the-global-scope-name">#get-the-global-scope-name</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-get-the-global-scope-name">3.2. Converting an intermediate memory measurement to the result</a>
+    <li><a href="#ref-for-memory-attribution-token-cross-origin-aggregated-flag">3.3. Converting an intermediate memory measurement to the result</a>
+    <li><a href="#ref-for-memory-attribution-token-cross-origin-aggregated-flag①">3.4. Creating or obtaining a memory attribution token</a> <a href="#ref-for-memory-attribution-token-cross-origin-aggregated-flag②">(2)</a> <a href="#ref-for-memory-attribution-token-cross-origin-aggregated-flag③">(3)</a> <a href="#ref-for-memory-attribution-token-cross-origin-aggregated-flag④">(4)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-performance-measurememory">
    <b><a href="#dom-performance-measurememory">#dom-performance-measurememory</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-performance-measurememory">4.1. Extensions to the Performance interface</a>
+    <li><a href="#ref-for-dom-performance-measurememory">1. Introduction</a>
+    <li><a href="#ref-for-dom-performance-measurememory①">1.1. Examples</a> <a href="#ref-for-dom-performance-measurememory②">(2)</a>
+    <li><a href="#ref-for-dom-performance-measurememory③">2.1. Memory measurement result</a>
+    <li><a href="#ref-for-dom-performance-measurememory④">3.1. Extensions to the Performance interface</a> <a href="#ref-for-dom-performance-measurememory⑤">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="memory-measurement-allowed-predicate">
+   <b><a href="#memory-measurement-allowed-predicate">#memory-measurement-allowed-predicate</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-memory-measurement-allowed-predicate">3.2. Top-level algorithms</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="getting-all-agent-clusters">
+   <b><a href="#getting-all-agent-clusters">#getting-all-agent-clusters</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-getting-all-agent-clusters">3.2. Top-level algorithms</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="implementation-defined-memory-measurement">
+   <b><a href="#implementation-defined-memory-measurement">#implementation-defined-memory-measurement</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-implementation-defined-memory-measurement">3.2. Top-level algorithms</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="creating-a-new-memory-measurement">
+   <b><a href="#creating-a-new-memory-measurement">#creating-a-new-memory-measurement</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-creating-a-new-memory-measurement">3.2. Top-level algorithms</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="creating-a-new-memory-breakdown-entry">
+   <b><a href="#creating-a-new-memory-breakdown-entry">#creating-a-new-memory-breakdown-entry</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-creating-a-new-memory-breakdown-entry">3.3. Converting an intermediate memory measurement to the result</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="creating-a-new-memory-attribution">
+   <b><a href="#creating-a-new-memory-attribution">#creating-a-new-memory-attribution</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-creating-a-new-memory-attribution">3.3. Converting an intermediate memory measurement to the result</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="obtain-a-window-memory-attribution-token">
+   <b><a href="#obtain-a-window-memory-attribution-token">#obtain-a-window-memory-attribution-token</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-obtain-a-window-memory-attribution-token">4.2. Extensions to the existing algorithms</a> <a href="#ref-for-obtain-a-window-memory-attribution-token①">(2)</a> <a href="#ref-for-obtain-a-window-memory-attribution-token②">(3)</a> <a href="#ref-for-obtain-a-window-memory-attribution-token③">(4)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="obtain-a-worker-memory-attribution-token">
+   <b><a href="#obtain-a-worker-memory-attribution-token">#obtain-a-worker-memory-attribution-token</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-obtain-a-worker-memory-attribution-token">4.2. Extensions to the existing algorithms</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="extract-container-element-attributes">
+   <b><a href="#extract-container-element-attributes">#extract-container-element-attributes</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-extract-container-element-attributes">3.4. Creating or obtaining a memory attribution token</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="windoworworkerglobalscope-memory-attribution-token">
    <b><a href="#windoworworkerglobalscope-memory-attribution-token">#windoworworkerglobalscope-memory-attribution-token</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-windoworworkerglobalscope-memory-attribution-token">3.2. Converting an intermediate memory measurement to the result</a>
-    <li><a href="#ref-for-windoworworkerglobalscope-memory-attribution-token①">3.3. Creating or obtaining a memory attribution token</a>
-    <li><a href="#ref-for-windoworworkerglobalscope-memory-attribution-token②">4.3. Extensions to the existing algorithms</a> <a href="#ref-for-windoworworkerglobalscope-memory-attribution-token③">(2)</a> <a href="#ref-for-windoworworkerglobalscope-memory-attribution-token④">(3)</a> <a href="#ref-for-windoworworkerglobalscope-memory-attribution-token⑤">(4)</a> <a href="#ref-for-windoworworkerglobalscope-memory-attribution-token⑥">(5)</a> <a href="#ref-for-windoworworkerglobalscope-memory-attribution-token⑦">(6)</a> <a href="#ref-for-windoworworkerglobalscope-memory-attribution-token⑧">(7)</a> <a href="#ref-for-windoworworkerglobalscope-memory-attribution-token⑨">(8)</a>
+    <li><a href="#ref-for-windoworworkerglobalscope-memory-attribution-token">3.3. Converting an intermediate memory measurement to the result</a>
+    <li><a href="#ref-for-windoworworkerglobalscope-memory-attribution-token①">3.4. Creating or obtaining a memory attribution token</a>
+    <li><a href="#ref-for-windoworworkerglobalscope-memory-attribution-token②">4.2. Extensions to the existing algorithms</a> <a href="#ref-for-windoworworkerglobalscope-memory-attribution-token③">(2)</a> <a href="#ref-for-windoworworkerglobalscope-memory-attribution-token④">(3)</a> <a href="#ref-for-windoworworkerglobalscope-memory-attribution-token⑤">(4)</a> <a href="#ref-for-windoworworkerglobalscope-memory-attribution-token⑥">(5)</a> <a href="#ref-for-windoworworkerglobalscope-memory-attribution-token⑦">(6)</a> <a href="#ref-for-windoworworkerglobalscope-memory-attribution-token⑧">(7)</a> <a href="#ref-for-windoworworkerglobalscope-memory-attribution-token⑨">(8)</a>
    </ul>
   </aside>
 <script>/* script-dfn-panel */
